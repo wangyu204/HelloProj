@@ -1,41 +1,25 @@
 # coding=utf-8
 
-
-# 几何图形
-class Figure:
-    def draw(self):
-        print('绘制Figure...')
-
-
-# 椭圆形
-class Ellipse(Figure):
-    def draw(self):
-        print('绘制Ellipse...')
+# 鸭子类型  不一定要有继承关系，只看方法
+class Animal(object):
+    def run(self):
+        print('动物跑...')
 
 
-# 三角形
-class Triangle(Figure):
-    def draw(self):
-        print('绘制Triangle...')
+class Dog(Animal):
+    def run(self):
+        print('狗狗跑...')
 
 
-f1 = Figure()  # 没有发生多态
-f1.draw()
+class Car:
+    def run(self):
+        print('汽车跑...')
 
-f2 = Ellipse()  # 发生多态
-f2.draw()
 
-f3 = Triangle()  # 发生多态
-f3.draw()
+def go(animal):  # 接收参数是Animal
+    animal.run()
 
-# 类型检测
-print('---实例是否是某个类型或七之类---')
-print(isinstance(f1, Triangle))  # False
-print(isinstance(f2, Triangle))  # False
-print(isinstance(f3, Triangle))  # True
-print(isinstance(f2, Figure))  # True
 
-print('---类型---')
-print(issubclass(Ellipse, Triangle))  # False
-print(issubclass(Ellipse, Figure))  # True
-print(issubclass(Triangle, Ellipse))  # False
+go(Animal())
+go(Dog())
+go(Car())
