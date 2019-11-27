@@ -1,19 +1,10 @@
 # coding=utf-8
 
-# 函数类型返回
 def calculate_fun(opr):
-    # 定义相加函数
-    def add(a, b):
-        return a + b
-
-    # 定义相减函数
-    def sub(a, b):
-        return a - b
-
     if opr == '+':
-        return add
+        return lambda a, b: (a + b)
     else:
-        return sub
+        return lambda a, b: (a - b)
 
 
 f1 = calculate_fun('+')
