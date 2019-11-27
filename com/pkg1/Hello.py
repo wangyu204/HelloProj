@@ -1,12 +1,15 @@
 # coding=utf-8
 
-# 元组实现 多值返回
-def position(dt, speed):
-    posx = speed[0] * dt
-    posy = speed[1] * dt
-    return (posx, posy)
+
+# 创建全局变量x
+x = 20
 
 
-move = position(60.0, (10, -5))
+def print_value():
+    global x
+    x = 10
+    print("函数中x = {0}".format(x))
 
-print("物体位移：({0}, {1})".format(move[0], move[1]))
+
+print_value()
+print("全局变量x = {0}".format(x))
