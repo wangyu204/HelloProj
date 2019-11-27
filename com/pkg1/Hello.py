@@ -1,17 +1,11 @@
 # coding=utf-8
 
 
-# 字典 {key1:value1, key2:value2}
-student_dic = {101: "wangyu", 102: "lisue", 103: "huanghaipo"}
+# 字典 推导式
+input_dict = {'one': 1, 'two': 2, 'three': 3, 'four': 4}
 
-print('---key---')
-for student_id in student_dic.keys():
-    print("学号：" + str(student_id))
+output_dict = {k: v for k, v in input_dict.items() if v % 2 == 0}
+print(output_dict)
 
-print('---value---')
-for student_name in student_dic.values():
-    print("名字：" + str(student_name))
-
-print('------')
-for student_id, student_name in student_dic.items():
-    print("学号：{0} - 名字：{1}".format(student_id, student_name))
+keys = [k for k, v in input_dict.items() if v % 2 == 0]
+print(keys)
