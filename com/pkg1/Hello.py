@@ -1,12 +1,15 @@
 # coding=utf-8
 
 
-# 元组 tuple 一种序列结构
-a = (21, 32, 43, 54)
+# 列表 list [] 也是一种序列结构
+n_list = []
+for x in range(10):
+    if x % 2 == 0:
+        n_list.append(x ** 2)
+print(n_list)
 
-for item in a:
-    print(item)
+n_list = [x ** 2 for x in range(10) if x % 2 == 0]
+print(n_list)
 
-print('-----')
-for i, item in enumerate(a):
-    print("{0} - {1}".format(i, item))
+n_list = [x for x in range(100) if x % 2 == 0 if x % 5 == 0]
+print(n_list)
