@@ -19,3 +19,8 @@ day = WeekDays.FRIDAY
 print(day)
 print(day.value)
 print(day.name)
+
+if day == WeekDays.MONDAY:
+    print('工作')
+elif day == WeekDays.FRIDAY:
+    print('学习')
