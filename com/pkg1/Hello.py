@@ -2,6 +2,7 @@
 
 
 import datetime as dt
+import traceback as tb
 
 
 def read_date_from_file(filename):
@@ -13,7 +14,7 @@ def read_date_from_file(filename):
         return date
     except (ValueError, OSError) as e:
         print('调用方法method1处理...')
-        print(e)
+        tb.print_exc()
 
 
 date = read_date_from_file('readme.txt')
