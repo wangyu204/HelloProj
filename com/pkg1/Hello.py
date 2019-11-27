@@ -1,19 +1,25 @@
 # coding=utf-8
 
-def calculate(n1, n2, opr):
-    multiple = 2
-
+# 函数类型返回
+def calculate_fun(opr):
     # 定义相加函数
     def add(a, b):
-        return (a + b) * multiple
+        return a + b
 
     # 定义相减函数
     def sub(a, b):
-        return (a - b) * multiple
+        return a - b
 
-    return add(n1, n2) if (opr == '+') else sub(n1, n2)
+    if opr == '+':
+        return add
+    else:
+        return sub
 
 
-print(calculate(10, 5, '+'))  # 输出结果是30
-# add(10, 5) 发生错误
-# sub(10, 5)  发生错误
+f1 = calculate_fun('+')
+f2 = calculate_fun('-')
+
+print(type(f1))
+
+print("10 + 5 = {0}".format(f1(10, 5)))
+print("10 - 5 = {0}".format(f2(10, 5)))
