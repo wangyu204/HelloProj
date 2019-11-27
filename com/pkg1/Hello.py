@@ -3,13 +3,15 @@
 import enum
 
 
-class WeekDays(enum.Enum):
+# 防止重复
+@enum.unique
+class WeekDays(enum.IntEnum):
     # 枚举常量列表
     MONDAY = 1
     TUESDAY = 2
-    WEDNESDAY = 3
+    WEDNESDAY = 3  # 'Wed.'
     THURSDAY = 4
-    FRIDAY = 10
+    FRIDAY = 5  # 1
 
 
 day = WeekDays.FRIDAY
