@@ -1,10 +1,16 @@
 # coding=utf-8
 
-# 类  基础父类
 class Animal(object):
-    # 类体
-    pass  # pass语句只是 占位的作用
+    """定义动物类"""
+
+    def __init__(self, age, sex, weight):
+        self.age = age  # 定义年龄实例变量
+        self.sex = sex  # 定义性别实例变量
+        self.weight = weight  # 定义体重实例变量
 
 
-animal = Animal()
-print(animal)
+animal = Animal(2, 1, 10.0)
+
+print('年龄：{0}'.format(animal.age))
+print('性别：{0}'.format('雌性' if animal.sex == 0 else '雄性'))
+print('体重：{0}'.format(animal.weight))
