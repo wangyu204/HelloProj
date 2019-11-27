@@ -1,10 +1,19 @@
 # coding=utf-8
 
-# 生成器  yield   不直接返回所有数据，而是返回一个生成器对象（一种可迭代的对象）  __next__()
-def square(num):
-    for i in range(1, num + 1):
-        yield i * i
+def calculate(n1, n2, opr):
+    multiple = 2
+
+    # 定义相加函数
+    def add(a, b):
+        return (a + b) * multiple
+
+    # 定义相减函数
+    def sub(a, b):
+        return (a - b) * multiple
+
+    return add(n1, n2) if (opr == '+') else sub(n1, n2)
 
 
-for i in square(5):
-    print(i, end=' ')
+print(calculate(10, 5, '+'))  # 输出结果是30
+# add(10, 5) 发生错误
+# sub(10, 5)  发生错误
