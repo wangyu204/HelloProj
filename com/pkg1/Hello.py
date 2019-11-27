@@ -1,18 +1,10 @@
 # coding=utf-8
 
 
-i = 0
-
-while i * i < 10:
-    i += 1
-    if i == 3:
-        break
-    print("{0} * {0} = {1}".format(i, i * i))
-else:
-    print('While Over!')
-
-
-for item in range(10):
+for item in range(1, 10, 2):
     print("Count is : {0}".format(item))
-else:
-    print('For Over!')
+
+print('--------------')
+
+for item in range(0, -10, -3):
+    print("Count is : {0}".format(item))
