@@ -1,10 +1,8 @@
 # coding=utf-8
 
+import sys
 
-string_a = 'hello'
-print('e' in string_a)
-print('ell' not in string_a)
+score = int(sys.argv[1]) # 获得命令行传入的参数
 
-list_a = [1, 2]
-print(2 in list_a)
-print(1 not in list_a)
+if score >=85:
+    print("优秀")
