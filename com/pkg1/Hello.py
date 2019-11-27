@@ -11,16 +11,17 @@ class Animal(object):
 
     def eat(self):
         self.__weight += 0.05
+        self.__run()
         print('eat...')
 
-    def run(self):
+    def __run(self):
         self.__weight -= 0.01
         print('run...')
 
 
 a1 = Animal(2, 0, 10.0)
 
-# print('a1体重：{0:0.2f}'.format(a1.weight)) #私有变量不可访问
 a1.eat()
-a1.run()
-print('a1体重：{0:0.2f}'.format(a1._Animal__weight))
+# a1.run()  #私有方法 不可调用
+
+a1._Animal__run();
