@@ -1,8 +1,8 @@
 # coding=utf-8
 
-import sys
+i = 0
+while i * i < 100_000:
+    i += 1
 
-score = int(sys.argv[1]) # 获得命令行传入的参数
-
-result = '及格' if score >= 60 else '不及格'
-print(result)
+print("i = {0}".format(i))
+print("i * i = {0}".format(i * i))
