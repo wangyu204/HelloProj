@@ -1,10 +1,12 @@
 # coding=utf-8
 
 
-for item in range(1, 10, 2):
-    print("Count is : {0}".format(item))
+# 元组 tuple 一种序列结构
+a = (21, 32, 43, 54)
 
-print('--------------')
+for item in a:
+    print(item)
 
-for item in range(0, -10, -3):
-    print("Count is : {0}".format(item))
+print('-----')
+for i, item in enumerate(a):
+    print("{0} - {1}".format(i, item))
