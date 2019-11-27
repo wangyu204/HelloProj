@@ -1,46 +1,41 @@
 # coding=utf-8
 
 
-class Person:
-
-    def __init__(self, name, age):
-        self.name = name  # 名字
-        self.age = age  # 年龄
-
-    def info(self):
-        template = 'Person [name={0}, age={1}]'
-        s = template.format(self.name, self.age)
-        return s
+# 几何图形
+class Figure:
+    def draw(self):
+        print('绘制Figure...')
 
 
-p = Person('小赵', 18)
-print(p.info())
+# 椭圆形
+class Ellipse(Figure):
+    def draw(self):
+        print('绘制Ellipse...')
 
 
-# class Student:
-#
-#     def __init__(self, name, age, school):
-#         self.name = name  # 名字
-#         self.age = age  # 年龄
-#         self.school = school  # 所在学校
-#
-#     def info(self):
-#         template = 'Student [name={0}, age={1}, school={2}]'
-#         s = template.format(self.name, self.age, self.school)
-#         return s
-
-class Student(Person):
-
-    def __init__(self, name, age, school):
-        super().__init__(name, age)
-        self.school = school  # 所在学校
-
-    # 重写方法
-    def info(self):
-        template = 'Student [name={0}, age={1}, school={2}]'
-        s = template.format(self.name, self.age, self.school)
-        return s
+# 三角形
+class Triangle(Figure):
+    def draw(self):
+        print('绘制Triangle...')
 
 
-s = Student('Tom', 28, '清华大学')
-print(s.info())
+f1 = Figure()  # 没有发生多态
+f1.draw()
+
+f2 = Ellipse()  # 发生多态
+f2.draw()
+
+f3 = Triangle()  # 发生多态
+f3.draw()
+
+# 类型检测
+print('---实例是否是某个类型或七之类---')
+print(isinstance(f1, Triangle))  # False
+print(isinstance(f2, Triangle))  # False
+print(isinstance(f3, Triangle))  # True
+print(isinstance(f2, Figure))  # True
+
+print('---类型---')
+print(issubclass(Ellipse, Triangle))  # False
+print(issubclass(Ellipse, Figure))  # True
+print(issubclass(Triangle, Ellipse))  # False
