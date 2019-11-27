@@ -1,27 +1,44 @@
 # coding=utf-8
 
 
+# class Animal(object):
+#     """定义动物类"""
+#
+#     def __init__(self, age, sex=1, weight=0.0):
+#         self.age = age  # 定义年龄实例成员变量
+#         self.sex = sex  # 定义性别实例成员变量
+#         self.__weight = weight  # 定义体重实例成员变量
+#
+#     def get_weight(self):
+#         return self.__weight
+#
+#     def set_weight(self, weight):
+#         self.__weight = weight
+#
+#
+# a1 = Animal(2, 0, 10.0)
+# print('a1体重：{0:0.2f}'.format(a1.get_weight()))
+# a1.set_weight(123.45)
+# print('a1体重：{0:0.2f}'.format(a1.get_weight()))
+
 class Animal(object):
     """定义动物类"""
 
     def __init__(self, age, sex=1, weight=0.0):
-        self.age = age  # 定义年龄实例变量
-        self.sex = sex  # 定义性别实例变量
-        self.__weight = weight  # 定义体重实例变量
+        self.age = age  # 定义年龄实例成员变量
+        self.sex = sex  # 定义性别实例成员变量
+        self.__weight = weight  # 定义体重实例成员变量
 
-    def eat(self):
-        self.__weight += 0.05
-        self.__run()
-        print('eat...')
+    @property
+    def weight(self):  # 替代get_weight(self):
+        return self.__weight
 
-    def __run(self):
-        self.__weight -= 0.01
-        print('run...')
+    @weight.setter
+    def weight(self, weight):  # 替代set_weight(self, weight):
+        self.__weight = weight
 
 
 a1 = Animal(2, 0, 10.0)
-
-a1.eat()
-# a1.run()  #私有方法 不可调用
-
-a1._Animal__run();
+print('a1体重：{0:0.2f}'.format(a1.weight))
+a1.weight = 123.45  # a1.set_weight(123.45)
+print('a1体重：{0:0.2f}'.format(a1.weight))
