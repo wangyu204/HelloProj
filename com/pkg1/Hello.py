@@ -11,14 +11,8 @@ def read_date_from_file(filename):
         in_date = in_date.strip()
         date = dt.datetime.strptime(in_date, '%Y-%m-%d')
         return date
-    except ValueError as e:
-        print('处理ValueError异常')
-        print(e)
-    except FileNotFoundError as e:
-        print('处理FileNotFoundError异常')
-        print(e)
-    except OSError as e:
-        print('处理OSError异常')
+    except (ValueError, OSError) as e:
+        print('调用方法method1处理...')
         print(e)
 
 
