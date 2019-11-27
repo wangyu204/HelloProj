@@ -1,25 +1,19 @@
 # coding=utf-8
 
-class Person:
-    def __init__(self, name, age):
-        self.name = name  # 名字
-        self.age = age  # 年龄
-
-    def __str__(self):
-        template = 'Person [name={0}, age={1}]'
-        s = template.format(self.name, self.age)
-        return s
-
-    def __eq__(self, other):
-        if self.name == other.name and self.age == other.age:
-            return True
-        else:
-            return False
+import enum
 
 
-p1 = Person('Tony', 18)
-p2 = Person('Tony', 18)
+class WeekDays(enum.Enum):
+    # 枚举常量列表
+    MONDAY = 1
+    TUESDAY = 2
+    WEDNESDAY = 3
+    THURSDAY = 4
+    FRIDAY = 10
 
-print(p1)
 
-print(p1 == p2)  # True
+day = WeekDays.FRIDAY
+
+print(day)
+print(day.value)
+print(day.name)
