@@ -1,26 +1,6 @@
 # coding=utf-8
 
-import enum
 
-
-# 防止重复
-@enum.unique
-class WeekDays(enum.IntEnum):
-    # 枚举常量列表
-    MONDAY = 1
-    TUESDAY = 2
-    WEDNESDAY = 3  # 'Wed.'
-    THURSDAY = 4
-    FRIDAY = 5  # 1
-
-
-day = WeekDays.FRIDAY
-
-print(day)
-print(day.value)
-print(day.name)
-
-if day == WeekDays.MONDAY:
-    print('工作')
-elif day == WeekDays.FRIDAY:
-    print('学习')
+i = input('请输入数字：')
+print(i)
+print(5 / int(i))
