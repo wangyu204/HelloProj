@@ -1,26 +1,27 @@
 # coding=utf-8
 
 
-class Animal(object):
-    """定义动物类"""
+class Account:
+    """定义银行账户类"""
 
-    def __init__(self, age, sex=1, weight=0.0):
-        self.age = age  # 定义年龄实例变量
-        self.sex = sex  # 定义性别实例变量
-        self.weight = weight  # 定义体重实例变量
+    interest_rate = 0.0668  # 类变量利率
 
-    def eat(self):
-        self.weight += 0.05
-        print('eat...')
+    def __init__(self, owner, amount):
+        self.owner = owner  # 定义实例变量账户名
+        self.amount = amount  # 定义实例变量账户金额
 
-    def run(self):
-        self.weight -= 0.01
-        print('run...')
+    # 类方法
+    @classmethod
+    def interest_by(cls, amt):
+        return cls.interest_rate * amt
+
+    # 静态方法
+    @staticmethod
+    def interest_with(amt):
+        return Account.interest_by(amt)
 
 
-a1 = Animal(2, 0, 10.0)
-print('a1体重：{0:0.2f}'.format(a1.weight))
-a1.eat()
-print('a1体重：{0:0.2f}'.format(a1.weight))
-a1.run()
-print('a1体重：{0:0.2f}'.format(a1.weight))
+interest1 = Account.interest_by(12_000.0)
+print('计算利息：{0:.4f}'.format(interest1))
+interest2 = Account.interest_with(12_000.0)
+print('计算利息：{0:.4f}'.format(interest2))
