@@ -1,8 +1,19 @@
 # coding=utf-8
 
-i = 0
-while i * i < 100_000:
-    i += 1
+print("----范围-------")
+for num in range(1, 10):  # 使用范围
+    print("{0} x {0} = {1}".format(num, num * num))
 
-print("i = {0}".format(i))
-print("i * i = {0}".format(i * i))
+print("----字符串-------")
+#  for语句
+for item in 'Hello':
+    print(item)
+
+# 声明整数列表
+numbers = [43, 32, 53, 54, 75, 7, 10]
+
+print("----整数列表-------")
+
+#  for语句
+for item in numbers:
+    print("Count is : {0}".format(item))
