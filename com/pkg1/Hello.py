@@ -1,23 +1,10 @@
 # coding=utf-8
 
 
-class Person:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
+string_a = 'hello'
+print('e' in string_a)
+print('ell' not in string_a)
 
-    def __eq__(self, other):
-        if self.name == other.name and self.age == other.age:
-            return True
-        else:
-            return False
-
-
-p1 = Person('Tony', 18)
-p2 = Person('Tony', 18)
-
-print(p1 == p2)
-print(p1 is p2)
-
-print(p1 != p2)
-print(p1 is not p2)
+list_a = [1, 2]
+print(2 in list_a)
+print(1 not in list_a)
