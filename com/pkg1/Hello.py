@@ -1,29 +1,26 @@
 # coding=utf-8
 
 
-class Account:
-    """定义银行账户类"""
+class Animal(object):
+    """定义动物类"""
 
-    interest_rate = 0.0668  # 类变量利率
+    def __init__(self, age, sex=1, weight=0.0):
+        self.age = age  # 定义年龄实例变量
+        self.sex = sex  # 定义性别实例变量
+        self.weight = weight  # 定义体重实例变量
 
-    def __init__(self, owner, amount):
-        self.owner = owner  # 定义实例变量账户名
-        self.amount = amount  # 定义实例变量账户金额
+    def eat(self):
+        self.weight += 0.05
+        print('eat...')
+
+    def run(self):
+        self.weight -= 0.01
+        print('run...')
 
 
-account = Account('Tony', 1_800_000.0)
-
-print('账户名：{0}'.format(account.owner))
-print('账户金额：{0}'.format(account.amount))
-print('利率：{0}'.format(Account.interest_rate))
-
-# 修改类变量利率
-Account.interest_rate = 0.78
-
-print('Account利率：{0}'.format(Account.interest_rate))
-# print('ac1利率：{0}'.format(account.interest_rate1))  #报错了
-
-print('ac1实例所有变量：{0}'.format(account.__dict__))
-account.interest_rate = 0.01
-account.interest_rate2 = 0.01
-print('ac1实例所有变量：{0}'.format(account.__dict__))
+a1 = Animal(2, 0, 10.0)
+print('a1体重：{0:0.2f}'.format(a1.weight))
+a1.eat()
+print('a1体重：{0:0.2f}'.format(a1.weight))
+a1.run()
+print('a1体重：{0:0.2f}'.format(a1.weight))
