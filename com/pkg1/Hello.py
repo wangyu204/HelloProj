@@ -1,14 +1,18 @@
 # coding=utf-8
 
 
-for item in range(10):
-    if item == 3:
-        # 跳出循环
+i = 0
+
+while i * i < 10:
+    i += 1
+    if i == 3:
         break
-    print("Count0 is : {0}".format(item))
+    print("{0} * {0} = {1}".format(i, i * i))
+else:
+    print('While Over!')
 
 
 for item in range(10):
-    if item == 3:
-        continue
-    print("Count1 is : {0}".format(item))
+    print("Count is : {0}".format(item))
+else:
+    print('For Over!')
