@@ -1,11 +1,12 @@
 # coding=utf-8
 
 
-# 字典 推导式
-input_dict = {'one': 1, 'two': 2, 'three': 3, 'four': 4}
+# 函数
+def rectangle_area(width, height):
+    area = width * height
+    return area
 
-output_dict = {k: v for k, v in input_dict.items() if v % 2 == 0}
-print(output_dict)
 
-keys = [k for k, v in input_dict.items() if v % 2 == 0]
-print(keys)
+r_area = rectangle_area(320.0, 480.0)
+
+print("320*480={0:.2f}".format(r_area))
