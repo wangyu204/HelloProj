@@ -1,25 +1,25 @@
 # coding=utf-8
 
-# 鸭子类型  不一定要有继承关系，只看方法
-class Animal(object):
-    def run(self):
-        print('动物跑...')
+class Person:
+    def __init__(self, name, age):
+        self.name = name  # 名字
+        self.age = age  # 年龄
+
+    def __str__(self):
+        template = 'Person [name={0}, age={1}]'
+        s = template.format(self.name, self.age)
+        return s
+
+    def __eq__(self, other):
+        if self.name == other.name and self.age == other.age:
+            return True
+        else:
+            return False
 
 
-class Dog(Animal):
-    def run(self):
-        print('狗狗跑...')
+p1 = Person('Tony', 18)
+p2 = Person('Tony', 18)
 
+print(p1)
 
-class Car:
-    def run(self):
-        print('汽车跑...')
-
-
-def go(animal):  # 接收参数是Animal
-    animal.run()
-
-
-go(Animal())
-go(Dog())
-go(Car())
+print(p1 == p2)  # True
