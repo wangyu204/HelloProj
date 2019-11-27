@@ -35,10 +35,11 @@ class Student(Person):
         super().__init__(name, age)
         self.school = school  # 所在学校
 
-    # def info(self):
-    #     template = 'Student [name={0}, age={1}, school={2}]'
-    #     s = template.format(self.name, self.age, self.school)
-    #     return s
+    # 重写方法
+    def info(self):
+        template = 'Student [name={0}, age={1}, school={2}]'
+        s = template.format(self.name, self.age, self.school)
+        return s
 
 
 s = Student('Tom', 28, '清华大学')
