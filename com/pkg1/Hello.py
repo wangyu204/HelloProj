@@ -1,16 +1,23 @@
 # coding=utf-8
 
 
-a = 0b10110010
-b = 0b01011110
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
 
-print("a | b = {0:b}".format(a | b))  # 0b11111110
-print("a & b = {0}".format(a & b))  # 0b00010010
-print("a ^ b = {0}".format(a ^ b))  # 0b11101100
-print("~a = {0}".format(~a))  # -179
-print("a >> 2 = {0}".format(a >> 2))  # 0b00101100
-print("a << 2 = {0}".format(a << 2))  # 0b11001000
+    def __eq__(self, other):
+        if self.name == other.name and self.age == other.age:
+            return True
+        else:
+            return False
 
-c = -0b1100
-print("c >> 2 = {0}".format(c >> 2))  # -0b00000011
-print("c <<  2 = {0}".format(c << 2))  # -0b00110000
+
+p1 = Person('Tony', 18)
+p2 = Person('Tony', 18)
+
+print(p1 == p2)
+print(p1 is p2)
+
+print(p1 != p2)
+print(p1 is not p2)
