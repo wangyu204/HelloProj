@@ -1,13 +1,13 @@
 # coding=utf-8
 
 
-def print_area(width, height):
-    area = width * height
-    print("{0} x {1} 长方形的面积:{2}".format(width, height, area))
+def make_coffee(name="卡布奇诺"):
+    return "制作一杯{0}咖啡。".format(name)
 
 
-print_area(320.0, 480.0)  # 没有采用关键字参数函数调用
-print_area(width=320.0, height=480.0)  # 采用关键字参数函数调用
-print_area(320.0, height=480.0)  # 采用关键字参数函数调用
-# print_area(width=320.0, height)  # 发生错误
-print_area(height=480.0, width=320.0)  # 采用关键字参数函数调用
+coffee1 = make_coffee("拿铁")
+coffee2 = make_coffee()
+
+print(coffee1)  # 制作一杯拿铁咖啡。
+print(coffee2)  # 制作一杯卡布奇诺咖啡。
+
