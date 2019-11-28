@@ -1,28 +1,37 @@
 # coding=utf-8
 
 
-import os
+import os.path
+from datetime import datetime
 
 f_name = 'test.txt'
-copy_f_name = 'copy.txt'
+af_name = r'/Users/mac/Documents/wangyu/gitRepository/HelloProj/com/pkg1/test.txt'
 
-with open(f_name, 'r') as f:
-    b = f.read()
-    with open(copy_f_name, 'w') as copy_f:
-        copy_f.write(b)
+# 返回路径中基础名部分
+basename = os.path.basename(af_name)
+print(basename)  # test.txt
 
-try:
-    os.rename(copy_f_name, 'copy2.txt')
-except OSError:
-    os.remove('copy2.txt')
+# 返回路径中目录部分
+dirname = os.path.dirname(af_name)
+print(dirname)
 
-# print(os.listdir(os.curdir))
-# print(os.listdir(os.pardir))
+# 返回文件的绝对路径
+print(os.path.abspath(f_name))
 
-try:
-    os.mkdir('subdir')
-except OSError:
-    os.rmdir('subdir')
+# 返回文件大小
+print(os.path.getsize(f_name))  # 14
+# 返回最近访问时间
+atime = datetime.fromtimestamp(os.path.getatime(f_name))
+print(atime)
+# 返回创建时间
+ctime = datetime.fromtimestamp(os.path.getctime(f_name))
+print(ctime)
+# 返回修改时间
+mtime = datetime.fromtimestamp(os.path.getmtime(f_name))
+print(mtime)
 
-for item in os.walk('.'):
-    print(item)
+print(os.path.isfile(dirname))  # False
+print(os.path.isdir(dirname))  # True
+print(os.path.isfile(f_name))  # True
+print(os.path.isdir(f_name))  # False
+print(os.path.exists(f_name))  # True
