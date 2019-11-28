@@ -1,26 +1,32 @@
 # coding=utf-8
 
 
-import json
+import configparser
 
-# 准备数据
-json_obj = r'{"name": "tony", "age": 30, "sex": true, "a": [1, 3], "b": ["A", "B", "C"]}'
-# json_obj = "{'name': 'tony', 'age': 30, 'sex': true, 'a': [1, 3], 'b': ['A', 'B', 'C']}"
+config = configparser.ConfigParser()  # 创建配置解析器对象
 
-py_dict = json.loads(json_obj)
-print(type(py_dict))  # <class 'dict'>
-print(py_dict['name'])
-print(py_dict['age'])
-print(py_dict['sex'])
+config.read('data/Setup.ini', encoding='utf-8')  # 读取并解析配置文件
 
-py_lista = py_dict['a']  # 取出列表对象
-print(py_lista)
-py_listb = py_dict['b']  # 取出列表对象
-print(py_listb)
+print(config.sections())  # 返回所有的节
 
-print('--------')
-# 读取JSON数据到data2.json文件
-with open('data/data2.json', 'r') as f:
-    data = json.load(f)
-    print(data)
-    print(type(data))  # <class 'dict'>
+print('-------')
+section1 = config['Startup']  # 返回Startup节
+print(config.options('Startup'))
+
+print('-------')
+print(section1['requireOS'])
+print(section1['RequireIE'])
+
+print('-------')
+print(config['Product']['msi'])
+
+print('-------')
+print(config['Windows 2000']['MajorVersion'])  # 返回MajorVersion数据
+print(config['Windows 2000']['ServicePackMajor'])
+
+print('-------')
+value = config.get('Windows 2000', 'MajorVersion')  # 返回MajorVersion数据
+print(type(value))  # <class 'str'>
+
+value = config.getint('Windows 2000', 'MajorVersion')  # 返回MajorVersion数据
+print(type(value))  # <class 'int'>
