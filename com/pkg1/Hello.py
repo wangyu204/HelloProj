@@ -1,14 +1,11 @@
 # coding=utf-8
 
 
-import logging
+import logging.config
 
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(threadName)s - '
-                           '%(name)s - %(funcName)s - %(levelname)s - %(message)s',
-                    filename='test.log')
+logging.config.fileConfig("logger.conf")
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('logger1')
 
 logger.debug('这是DEBUG级别信息。')
 logger.info('这是INFO级别信息。')
@@ -20,9 +17,6 @@ logger.critical('这是CRITICAL级别信息。')
 def funlog():
     logger.info('进入funlog函数。')
 
-
-logger.info('调用funlog函数。')
-funlog()
 
 logger.info('调用funlog函数。')
 funlog()
