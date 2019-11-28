@@ -1,22 +1,17 @@
 # coding=utf-8
 
 
-import logging.config
+import re
 
-logging.config.fileConfig("logger.conf")
+p1 = r'\w+@zhijieketang\.com'
+p2 = r'^\w+@zhijieketang\.com$'
 
-logger = logging.getLogger('logger1')
+text = "Tony's email is tony_guan588@zhijieketang.com."
+m = re.search(p1, text)
+print(m)  # 匹配
+m = re.search(p2, text)
+print(m)  # 不匹配
 
-logger.debug('这是DEBUG级别信息。')
-logger.info('这是INFO级别信息。')
-logger.warning('这是WARNING级别信息。')
-logger.error('这是ERROR级别信息。')
-logger.critical('这是CRITICAL级别信息。')
-
-
-def funlog():
-    logger.info('进入funlog函数。')
-
-
-logger.info('调用funlog函数。')
-funlog()
+email = 'tony_guan588@zhijieketang.com'
+m = re.search(p2, email)
+print(m)  # 匹配
