@@ -1,12 +1,16 @@
 # coding=utf-8
 
 
-import csv
+import xml.etree.ElementTree as ET
 
-with open('data/books.csv', 'r', encoding='gbk') as rf:
-    reader = csv.reader(rf)
-    with open('data/books2.csv', 'w', newline='', encoding='gbk') as wf:
-        writer = csv.writer(wf, delimiter='\t')
-        for row in reader:
-            print('|'.join(row))
-            writer.writerow(row)
+tree = ET.parse('data/Notes.xml')  # 创建XML文档树
+print(type(tree))  # xml.etree.ElementTree.ElementTree
+
+root = tree.getroot()  # root是根元素
+print(type(root))  # xml.etree.ElementTree.Element
+print(root.tag)  # Notes
+
+for index, child in enumerate(root):
+    print('第{0}个{1}元素，属性：{2}'.format(index, child.tag, child.attrib))
+    for i, child_child in enumerate(child):
+        print('    标签：{0}，内容：{1}'.format(child_child.tag, child_child.text))
