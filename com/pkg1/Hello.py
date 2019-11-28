@@ -3,11 +3,14 @@
 
 import re
 
-# p = r'<([\w]+)>.*</([\w]+)>'
-p = r'<([\w]+)>.*</\1>'  # 使用反向引用
+s = 'img1.jpg,img2.jpg,img3.bmp'
 
-m = re.search(p, '<a>abc</a>')
-print(m)  # 匹配
+# 捕获分组
+p = r'\w+(\.jpg)'
+mlist = re.findall(p, s)
+print(mlist)
 
-m = re.search(p, '<a>abc</b>')
-print(m)  # 不匹配
+# 非捕获分组
+p = r'\w+(?:\.jpg)'
+mlist = re.findall(p, s)
+print(mlist)
