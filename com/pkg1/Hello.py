@@ -3,15 +3,32 @@
 
 import re
 
-# p = r'[^0123456789]'
-p = r'\D'
+m = re.search(r'\d?', '87654321')  # 出现数字一次
+print(m)  # 匹配字符'8'
 
-m = re.search(p, '1000')
+m = re.search(r'\d?', 'ABC')  # 出现数字零次
+print(m)  # 匹配字符''
+
+m = re.search(r'\d*', '87654321')  # 出现数字多次
+print(m)  # 匹配字符'87654321'
+
+m = re.search(r'\d*', 'ABC')  # 出现数字零次
+print(m)  # 匹配字符''
+
+m = re.search(r'\d+', '87654321')  # 出现数字多次
+print(m)  # 匹配字符'87654321'
+
+m = re.search(r'\d+', 'ABC')
 print(m)  # 不匹配
 
-m = re.search(p, 'Python 3')
-print(m)  # 匹配
+m = re.search(r'\d{8}', '87654321')  # 出现数字8次
+print('8765432', m)  # 匹配字符'87654321'
 
-text = '你们好Hello'
-m = re.search(r'\w', text)
-print(m)  # 匹配
+m = re.search(r'\d{8}', 'ABC')
+print(m)  # 不匹配
+
+m = re.search(r'\d{7,8}', '87654321')  # 出现数字8次
+print(m)  # 匹配字符'87654321'
+
+m = re.search(r'\d{9,}', '87654321')
+print(m)  # 不匹配
