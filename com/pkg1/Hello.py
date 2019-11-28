@@ -3,16 +3,11 @@
 
 import re
 
-p = r'(?P<area_code>\d{3,4})-(?P<phone_code>\d{7,8})'
-m = re.search(p, '010-87654321')
+# p = r'<([\w]+)>.*</([\w]+)>'
+p = r'<([\w]+)>.*</\1>'  # 使用反向引用
+
+m = re.search(p, '<a>abc</a>')
 print(m)  # 匹配
-print(m.group())  # 返回匹配字符串
-print(m.groups())  # 获得所有组内容
 
-# 通过组编号返回组内容
-print(m.group(1))
-print(m.group(2))
-
-# 通过组名返回组内容
-print(m.group('area_code'))
-print(m.group('phone_code'))
+m = re.search(p, '<a>abc</b>')
+print(m)  # 不匹配
