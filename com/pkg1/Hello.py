@@ -1,12 +1,28 @@
 # coding=utf-8
 
 
-f_name = 'coco2dxcplus.jpg'
+import os
 
-with open(f_name, 'rb') as f:
+f_name = 'test.txt'
+copy_f_name = 'copy.txt'
+
+with open(f_name, 'r') as f:
     b = f.read()
-    print(type(b))
-    copy_f_name = 'copy.jpg'
-    with open(copy_f_name, 'wb') as copy_f:
+    with open(copy_f_name, 'w') as copy_f:
         copy_f.write(b)
-        print('文件复制成功')
+
+try:
+    os.rename(copy_f_name, 'copy2.txt')
+except OSError:
+    os.remove('copy2.txt')
+
+# print(os.listdir(os.curdir))
+# print(os.listdir(os.pardir))
+
+try:
+    os.mkdir('subdir')
+except OSError:
+    os.rmdir('subdir')
+
+for item in os.walk('.'):
+    print(item)
