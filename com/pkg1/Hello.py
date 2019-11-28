@@ -3,11 +3,13 @@
 
 import logging
 
-# logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.ERROR)
 
-logging.debug('这是DEBUG级别信息。')
-logging.info('这是INFO级别信息。')
-logging.warning('这是WARNING级别信息。')
-logging.error('这是ERROR级别信息。')
-logging.critical('这是CRITICAL级别信息。')
+logger = logging.getLogger(__name__)
+
+logger.debug('这是DEBUG级别信息。')
+logger.info('这是INFO级别信息。')
+logger.warning('这是WARNING级别信息。')
+logger.error('这是ERROR级别信息。')
+logger.critical('这是CRITICAL级别信息。')
