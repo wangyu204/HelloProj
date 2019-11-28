@@ -1,30 +1,13 @@
 # coding=utf-8
 
 
-import random
+import logging
 
-# 0.0 <= x < 1.0随机数
-print('----0.0 <= x < 1.0随机数----')
-for i in range(0, 10):
-    x = random.random()
-    print(x)
+# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 
-# 0 <= x < 5随机数
-print('----0 <= x < 5随机数----')
-for i in range(0, 10):
-    x = random.randrange(5)
-    print(x, end=' ')
-
-# 5 <= x < 10随机数
-print()
-print('----5 <= x < 10随机数----')
-for i in range(0, 10):
-    x = random.randrange(5, 10)
-    print(x, end=' ')
-
-# 5 <= x <= 10随机数
-print()
-print('----5 <= x <= 10随机数----')
-for i in range(0, 10):
-    x = random.randint(5, 10)
-    print(x, end=' ')
+logging.debug('这是DEBUG级别信息。')
+logging.info('这是INFO级别信息。')
+logging.warning('这是WARNING级别信息。')
+logging.error('这是ERROR级别信息。')
+logging.critical('这是CRITICAL级别信息。')
