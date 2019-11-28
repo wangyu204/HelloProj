@@ -6,11 +6,11 @@ import re
 p = r'\d+'
 text = 'AB12CD34EF'
 
-clist = re.split(p, text)
-print(clist)
+repace_text = re.sub(p, ' ', text)
+print(repace_text)
 
-clist = re.split(p, text, maxsplit=1)
-print(clist)
+repace_text = re.sub(p, ' ', text, count=1)
+print(repace_text)
 
-clist = re.split(p, text, maxsplit=2)
-print(clist)
+repace_text = re.sub(p, ' ', text, count=2)
+print(repace_text)
