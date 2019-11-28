@@ -3,8 +3,9 @@
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
-# logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(threadName)s - '
+                           '%(name)s - %(funcName)s - %(levelname)s - %(message)s')
 
 logger = logging.getLogger(__name__)
 
@@ -13,3 +14,11 @@ logger.info('这是INFO级别信息。')
 logger.warning('这是WARNING级别信息。')
 logger.error('这是ERROR级别信息。')
 logger.critical('这是CRITICAL级别信息。')
+
+
+def funlog():
+    logger.info('进入funlog函数。')
+
+
+logger.info('调用funlog函数。')
+funlog()
