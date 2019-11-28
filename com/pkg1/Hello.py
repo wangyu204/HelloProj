@@ -3,14 +3,13 @@
 
 import re
 
-p = r'(java).*(python)'
-regex = re.compile(p, re.I)
+p = r'.+'
+regex = re.compile(p)
 
-m = regex.search('I like Java and Python.')
+m = regex.search('Hello\nWorld.')
 print(m)  # 匹配
 
-m = regex.search('I like JAVA and Python.')
-print(m)  # 匹配
+regex = re.compile(p, re.DOTALL)
 
-m = regex.search('I like java and Python.')
+m = regex.search('Hello\nWorld.')
 print(m)  # 匹配
