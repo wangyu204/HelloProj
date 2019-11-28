@@ -5,7 +5,8 @@ import logging
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(threadName)s - '
-                           '%(name)s - %(funcName)s - %(levelname)s - %(message)s')
+                           '%(name)s - %(funcName)s - %(levelname)s - %(message)s',
+                    filename='test.log')
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,9 @@ logger.critical('这是CRITICAL级别信息。')
 def funlog():
     logger.info('进入funlog函数。')
 
+
+logger.info('调用funlog函数。')
+funlog()
 
 logger.info('调用funlog函数。')
 funlog()
