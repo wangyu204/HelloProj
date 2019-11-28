@@ -4,32 +4,23 @@
 import json
 
 # 准备数据
-py_dict = {'name': 'tony', 'age': 30, 'sex': True}  # 创建字典对象
-py_list = [1, 3]  # 创建列表对象
-py_tuple = ('A', 'B', 'C')  # 创建元组对象
+json_obj = r'{"name": "tony", "age": 30, "sex": true, "a": [1, 3], "b": ["A", "B", "C"]}'
+# json_obj = "{'name': 'tony', 'age': 30, 'sex': true, 'a': [1, 3], 'b': ['A', 'B', 'C']}"
 
-py_dict['a'] = py_list  # 添加列表到字典中
-py_dict['b'] = py_tuple  # 添加元组到字典中
-
-print(py_dict)
+py_dict = json.loads(json_obj)
 print(type(py_dict))  # <class 'dict'>
+print(py_dict['name'])
+print(py_dict['age'])
+print(py_dict['sex'])
 
-# 编码过程
-print('---------')
-json_obj = json.dumps(py_dict)
-print(json_obj)
-print(type(json_obj))  # <class 'str'>
+py_lista = py_dict['a']  # 取出列表对象
+print(py_lista)
+py_listb = py_dict['b']  # 取出列表对象
+print(py_listb)
 
-# 编码过程
-print('---------')
-json_obj = json.dumps(py_dict, indent=2)
-# 输出格式化后的字符串
-print(json_obj)
-
-# 写入JSON数据到data1.json文件
-with open('data/data1.json', 'w') as f:
-    json.dump(py_dict, f)
-
-# 写入JSON数据到data2.json文件
-with open('data/data2.json', 'w') as f:
-    json.dump(py_dict, f, indent=2)
+print('--------')
+# 读取JSON数据到data2.json文件
+with open('data/data2.json', 'r') as f:
+    data = json.load(f)
+    print(data)
+    print(type(data))  # <class 'dict'>
