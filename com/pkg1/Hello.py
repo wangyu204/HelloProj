@@ -3,12 +3,14 @@
 
 import re
 
-p = r'[Jj]ava'
-text = 'I like Java and java.'
+p = r'\d+'
+text = 'AB12CD34EF'
 
-match_list = re.findall(p, text)
-print(match_list)  # 匹配
+clist = re.split(p, text)
+print(clist)
 
-match_iter = re.finditer(p, text)
-for m in match_iter:
-    print(m.group())
+clist = re.split(p, text, maxsplit=1)
+print(clist)
+
+clist = re.split(p, text, maxsplit=2)
+print(clist)
