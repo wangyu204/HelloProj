@@ -3,15 +3,14 @@
 
 import re
 
-p1 = r'\w+@zhijieketang\.com'
-p2 = r'^\w+@zhijieketang\.com$'
+p = r'[Jj]ava'
+# p = r'Java|java|JAVA'
 
-text = "Tony's email is tony_guan588@zhijieketang.com."
-m = re.search(p1, text)
+m = re.search(p, 'I like Java and Python.')
 print(m)  # 匹配
-m = re.search(p2, text)
+
+m = re.search(p, 'I like JAVA and Python.')
 print(m)  # 不匹配
 
-email = 'tony_guan588@zhijieketang.com'
-m = re.search(p2, email)
+m = re.search(p, 'I like java and Python.')
 print(m)  # 匹配
