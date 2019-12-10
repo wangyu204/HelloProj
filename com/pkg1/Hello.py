@@ -1,18 +1,33 @@
 # coding=utf-8
 
 
-import configparser
+import pymysql
 
-config = configparser.ConfigParser()  # 创建配置解析器对象
+# 1. 建立数据库连接
+connection = pymysql.connect(host='localhost',
+                             user='root',
+                             password='wy123456',
+                             database='testdb',
+                             charset='utf8')
 
-config.read('data/Setup.ini', encoding='utf-8')  # 读取并解析配置文件
+try:
+    # 2. 创建游标对象
+    with connection.cursor() as cursor:
 
-# 写入配置文件
-config['Startup']['RequireMSI'] = '8.0'
-config['Product']['RequireMSI'] = '4.0'
+        # 3. 执行SQL操作
+        # sql = 'select name, userid from user where userid >%s'
+        # cursor.execute(sql, [0])
+        sql = 'select name, userid from user where userid >%(id)s'
+        cursor.execute(sql, {'id': 0})
 
-config.add_section('Section2')  # 添加节
-config.set('Section2', 'name', 'Mac')  # 添加配置项
+        # 4. 提取结果集
+        result_set = cursor.fetchall()
 
-with open('data/Setup.ini', 'w') as fw:
-    config.write(fw)
+        for row in result_set:
+            print('id：{0} - name：{1}'.format(row[1], row[0]))
+
+    # with代码块结束 5. 关闭游标
+
+finally:
+    # 6. 关闭数据连接
+    connection.close()
