@@ -1,66 +1,16 @@
 # coding=utf-8
 
-import pymysql
 
+import dbm
 
-# 查询最大用户Id
-def read_max_userid():
-    # 1. 建立数据库连接
-    connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='wy123456',
-                                 database='MyDB',
-                                 charset='utf8')
+with dbm.open('mydb', 'c') as db:
+    db['name'] = 'tony'  # 更新数据
+    print(db['name'].decode())  # 取出数据
 
-    try:
-        # 2. 创建游标对象
-        with connection.cursor() as cursor:
+    age = int(db.get('age', b'18').decode())  # 取出数据
+    print(age)
 
-            # 3. 执行SQL操作
-            sql = 'select max(userid) from user'
-            cursor.execute(sql)
+    if 'age' in db:  # 判断是否存在age数据
+        db['age'] = '20'  # 或者 b'20'
 
-            # 4. 提取结果集
-            row = cursor.fetchone()
-
-            if row is not None:
-                print('最大用户Id ：{0}'.format(row[0]))
-                return row[0]
-
-        # with代码块结束 5. 关闭游标
-
-    finally:
-        # 6. 关闭数据连接
-        connection.close()
-
-
-# 1. 建立数据库连接
-connection = pymysql.connect(host='localhost',
-                             user='root',
-                             password='wy123456',
-                             database='MyDB',
-                             charset='utf8')
-
-# 查询最大值
-maxid = read_max_userid()
-
-try:
-    # 2. 创建游标对象
-    with connection.cursor() as cursor:
-
-        # 3. 执行SQL操作
-        sql = 'delete from user where userid = %s'
-        affectedcount = cursor.execute(sql, (maxid))
-
-        print('影响的数据行数：{0}'.format(affectedcount))
-        # 4. 提交数据库事物
-        connection.commit()
-
-    # with代码块结束 5. 关闭游标
-
-except pymysql.DatabaseError:
-    # 4. 回滚数据库事物
-    connection.rollback()
-finally:
-    # 6. 关闭数据连接
-    connection.close()
+    del db['name']  # 删除name数据
