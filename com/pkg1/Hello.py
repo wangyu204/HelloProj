@@ -1,13 +1,12 @@
 # coding=utf-8
 
-
 import pymysql
 
 # 1. 建立数据库连接
 connection = pymysql.connect(host='localhost',
                              user='root',
                              password='wy123456',
-                             database='testdb',
+                             database='MyDB',
                              charset='utf8')
 
 try:
@@ -15,14 +14,21 @@ try:
     with connection.cursor() as cursor:
 
         # 3. 执行SQL操作
-        sql = 'select max(userid) from user'
-        cursor.execute(sql)
+        # 3.1 通过元组绑定
+        # sql = 'select name,userid from user where userid > %s'
+        # cursor.execute(sql, [0])
+
+        # 3.2 通过字典绑定
+        sql = 'select name,userid from user where userid > %(id)s'
+        cursor.execute(sql, {'id': 0})
 
         # 4. 提取结果集
-        row = cursor.fetchone()
+        result_set = cursor.fetchall()
 
-        if row is not None:
-            print('最大用户Id ：{0}'.format(row[0]))
+        for row in result_set:
+            print('id:{0} - name:{1}'.format(row[1], row[0]))
+
+        # cursor.close()
 
     # with代码块结束 5. 关闭游标
 
