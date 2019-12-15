@@ -7,23 +7,22 @@ import wx
 # 自定义窗口类MyFrame
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='一对多事件处理', size=(300, 180))
+        super().__init__(parent=None, title="鼠标事件处理", size=(400, 300))
         self.Centre()  # 设置窗口居中
-        panel = wx.Panel(parent=self)
-        self.statictext = wx.StaticText(parent=panel, pos=(110, 15))
-        b1 = wx.Button(parent=panel, id=10, label='Button1', pos=(100, 45))
-        b2 = wx.Button(parent=panel, id=11, label='Button2', pos=(100, 85))
-        # self.Bind(wx.EVT_BUTTON, self.on_click, b1)
-        # self.Bind(wx.EVT_BUTTON, self.on_click, id=11)
-        self.Bind(wx.EVT_BUTTON, self.on_click, id=10, id2=20)
+        self.Bind(wx.EVT_LEFT_DOWN, self.on_left_down)
+        self.Bind(wx.EVT_LEFT_UP, self.on_left_up)
+        self.Bind(wx.EVT_MOTION, self.on_mouse_move)
 
-    def on_click(self, event):
-        event_id = event.GetId()
-        print(event_id)
-        if event_id == 10:
-            self.statictext.SetLabelText('Button1单击')
-        else:
-            self.statictext.SetLabelText('Button2单击')
+    def on_left_down(self, evt):
+        print('鼠标按下')
+
+    def on_left_up(self, evt):
+        print('鼠标释放')
+
+    def on_mouse_move(self, event):
+        if event.Dragging() and event.LeftIsDown():
+            pos = event.GetPosition()
+            print(pos)
 
 
 class App(wx.App):
