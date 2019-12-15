@@ -1,13 +1,12 @@
 # coding=utf-8
 
+import wx
 
-import urllib.request
+# 创建应用程序对象
+app = wx.App()
+# 创建窗口对象
+frm = wx.Frame(None, title="第一个GUI程序!", size=(400, 300), pos=(100, 100))
 
-url = 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png'
+frm.Show()  # 显示窗口
 
-with urllib.request.urlopen(url) as response:
-    data = response.read()
-    f_name = 'download.png'
-    with open(f_name, 'wb') as f:
-        f.write(data)
-        print('下载文件成功')
+app.MainLoop()  # 进入主事件循环
