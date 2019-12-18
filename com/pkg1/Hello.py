@@ -13,7 +13,7 @@ class MyFrame(wx.Frame):
         vbox = wx.BoxSizer(wx.VERTICAL)
 
         self.statictext = wx.StaticText(parent=panel, label='StaticText1', style=wx.ALIGN_CENTRE_HORIZONTAL)
-        b1 = wx.Button(parent=panel, label='OK')
+        b1 = wx.Button(panel, -1, label='OK')
         self.Bind(wx.EVT_BUTTON, self.on_click, b1)
 
         b2 = wx.ToggleButton(panel, -1, 'ToggleButton')
