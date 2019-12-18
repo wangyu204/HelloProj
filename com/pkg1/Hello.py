@@ -37,7 +37,7 @@ class MyFrame(wx.Frame):
             self.image.SetBitmap(self.bmps[1])
         else:
             self.image.SetBitmap(self.bmps[2])
-        self.panel.Layout()
+        self.panel.Layout()  # 界面刷新避免重影
 
 
 class App(wx.App):
