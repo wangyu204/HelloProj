@@ -7,10 +7,10 @@ import wx
 # 自定义窗口类MyFrame
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='Box布局', size=(300, 120))
+        super().__init__(parent=None, title='StaticBox布局', size=(300, 120))
         self.Centre()  # 设置窗口居中
         panel = wx.Panel(parent=self)
-        # 创建垂直方向Box布局管理器对象
+        # 创建垂直方向的Box布局管理器对象
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.statictext = wx.StaticText(parent=panel, label='Button1单击')
         # 添加静态文本到Box布局管理器
@@ -19,15 +19,18 @@ class MyFrame(wx.Frame):
         b1 = wx.Button(parent=panel, id=10, label='Button1')
         b2 = wx.Button(parent=panel, id=11, label='Button2')
         self.Bind(wx.EVT_BUTTON, self.on_click, id=10, id2=20)
-        # 创建水平方向的Box布局管理器对象
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        # 添加b1到水平Box布局管理
-        hbox.Add(b1, 0, wx.EXPAND | wx.BOTTOM, 5)
-        # 添加b2到水平Box布局管理
-        hbox.Add(b2, 0, wx.EXPAND | wx.BOTTOM, 5)
 
-        # 将水平Box布局管理器到垂直Box布局管理器
-        vbox.Add(hbox, proportion=1, flag=wx.CENTER)
+        # 创建静态框对象
+        sb = wx.StaticBox(panel, label="按钮框")
+        # 创建水平方向的StaticBox布局管理器
+        hsbox = wx.StaticBoxSizer(sb, wx.HORIZONTAL)
+        # 添加b1到水平StaticBox布局管理
+        hsbox.Add(b1, 0, wx.EXPAND | wx.BOTTOM, 5)
+        # 添加b2到水平StaticBox布局管理
+        hsbox.Add(b2, 0, wx.EXPAND | wx.BOTTOM, 5)
+
+        # 添加hbox到vbox
+        vbox.Add(hsbox, proportion=1, flag=wx.CENTER)
 
         panel.SetSizer(vbox)
 
