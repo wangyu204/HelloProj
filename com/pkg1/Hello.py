@@ -7,43 +7,37 @@ import wx
 # 自定义窗口类MyFrame
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='下拉列表', size=(350, 180))
+        super().__init__(parent=None, title='静态图片控件', size=(300, 300))
         self.Centre()  # 设置窗口居中
-        panel = wx.Panel(self)
+        self.panel = wx.Panel(parent=self)
 
-        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        self.bmps = [wx.Bitmap('images/bird5.gif', wx.BITMAP_TYPE_GIF),
+                     wx.Bitmap('images/bird4.gif', wx.BITMAP_TYPE_GIF),
+                     wx.Bitmap('images/bird3.gif', wx.BITMAP_TYPE_GIF)]
 
-        statictext = wx.StaticText(panel, label='选择你喜欢的编程语言：')
-
-        list1 = ['Python', 'C++', 'Java']
-        lb1 = wx.ListBox(panel, -1, choices=list1, style=wx.LB_SINGLE)
-        self.Bind(wx.EVT_LISTBOX, self.on_listbox1, lb1)
-
-        hbox1.Add(statictext, 1, flag=wx.LEFT | wx.RIGHT | wx.FIXED_MINSIZE, border=5)
-        hbox1.Add(lb1, 1, flag=wx.ALL | wx.FIXED_MINSIZE)
-
-        hbox2 = wx.BoxSizer(wx.HORIZONTAL)
-
-        statictext = wx.StaticText(panel, label='选择你喜欢吃的水果：')
-        list2 = ['苹果', '橘子', '香蕉']
-        lb2 = wx.ListBox(panel, -1, choices=list2, style=wx.LB_EXTENDED)
-        self.Bind(wx.EVT_LISTBOX, self.on_listbox2, lb2)
-
-        hbox2.Add(statictext, 1, flag=wx.LEFT | wx.RIGHT | wx.FIXED_MINSIZE, border=5)
-        hbox2.Add(lb2, 1, flag=wx.ALL | wx.FIXED_MINSIZE)
-
+        # 创建垂直方向的Box布局管理器
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(hbox1, 1, flag=wx.ALL | wx.EXPAND, border=5)
-        vbox.Add(hbox2, 1, flag=wx.ALL | wx.EXPAND, border=5)
-        panel.SetSizer(vbox)
 
-    def on_listbox1(self, event):
-        listbox = event.GetEventObject()
-        print('选择 {0}'.format(listbox.GetSelection()))
+        b1 = wx.Button(parent=self.panel, id=1, label='Button1')
+        b2 = wx.Button(self.panel, id=2, label='Button2')
+        self.Bind(wx.EVT_BUTTON, self.on_click, id=1, id2=2)
 
-    def on_listbox2(self, event):
-        listbox = event.GetEventObject()
-        print('选择 {0}'.format(listbox.GetSelections()))
+        self.image = wx.StaticBitmap(self.panel, -1, self.bmps[0])
+
+        # 添加标控件到Box布局管理器
+        vbox.Add(b1, proportion=1, flag=wx.CENTER | wx.EXPAND)
+        vbox.Add(b2, proportion=1, flag=wx.CENTER | wx.EXPAND)
+        vbox.Add(self.image, proportion=3, flag=wx.CENTER)
+
+        self.panel.SetSizer(vbox)
+
+    def on_click(self, event):
+        event_id = event.GetId()
+        if event_id == 1:
+            self.image.SetBitmap(self.bmps[1])
+        else:
+            self.image.SetBitmap(self.bmps[2])
+        self.panel.Layout()
 
 
 class App(wx.App):
