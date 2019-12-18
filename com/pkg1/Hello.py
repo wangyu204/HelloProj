@@ -6,34 +6,37 @@ import wx
 # 自定义窗口类MyFrame
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='静态文本和按钮', size=(300, 200))
+        super().__init__(parent=None, title='文本框', size=(400, 200))
         self.Centre()  # 设置窗口居中
-        panel = wx.Panel(parent=self)
-        # 创建垂直方向的Box布局管理器
-        vbox = wx.BoxSizer(wx.VERTICAL)
+        panel = wx.Panel(self)
 
-        self.statictext = wx.StaticText(parent=panel, label='StaticText1', style=wx.ALIGN_CENTRE_HORIZONTAL)
-        b1 = wx.Button(panel, -1, label='OK')
-        self.Bind(wx.EVT_BUTTON, self.on_click, b1)
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
 
-        b2 = wx.ToggleButton(panel, -1, 'ToggleButton')
-        self.Bind(wx.EVT_BUTTON, self.on_click, b2)
+        fgs = wx.FlexGridSizer(3, 2, 10, 10)
 
-        bmp = wx.Bitmap('icon/1.png', wx.BITMAP_TYPE_PNG)
-        b3 = wx.BitmapButton(panel, -1, bmp)
-        self.Bind(wx.EVT_BUTTON, self.on_click, b3)
+        userid = wx.StaticText(panel, label="用户ID：")
+        pwd = wx.StaticText(panel, label="密码：")
+        content = wx.StaticText(panel, label="多行文本：")
 
-        # 添加静态文本和按钮到Box布局管理器
-        vbox.Add(100, 10, proportion=1, flag=wx.CENTER | wx.FIXED_MINSIZE)
-        vbox.Add(self.statictext, proportion=1, flag=wx.CENTER | wx.FIXED_MINSIZE)
-        vbox.Add(b1, proportion=1, flag=wx.CENTER | wx.EXPAND)
-        vbox.Add(b2, proportion=1, flag=wx.CENTER | wx.EXPAND)
-        vbox.Add(b3, proportion=1, flag=wx.CENTER | wx.EXPAND)
+        tc1 = wx.TextCtrl(panel)
+        tc2 = wx.TextCtrl(panel, style=wx.TE_PASSWORD)
+        tc3 = wx.TextCtrl(panel, style=wx.TE_MULTILINE)
 
-        panel.SetSizer(vbox)
+        # 设置tc1初始值
+        tc1.SetValue('tony')
+        # 获取tc1值
+        print('读取用户ID：{0}'.format(tc1.GetValue()))
 
-    def on_click(self, event):
-        self.statictext.SetLabelText('Hello, world.')
+        fgs.AddMany([userid, (tc1, 1, wx.EXPAND),
+                     pwd, (tc2, 1, wx.EXPAND),
+                     content, (tc3, 1, wx.EXPAND)])
+        fgs.AddGrowableRow(0, 1)
+        fgs.AddGrowableRow(1, 1)
+        fgs.AddGrowableRow(2, 3)
+        fgs.AddGrowableCol(0, 1)
+        fgs.AddGrowableCol(1, 2)
+        hbox.Add(fgs, proportion=1, flag=wx.ALL | wx.EXPAND, border=15)
+        panel.SetSizer(hbox)
 
 
 class App(wx.App):
