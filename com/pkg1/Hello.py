@@ -6,34 +6,34 @@ import wx
 # 自定义窗口类MyFrame
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='FlexGrid布局', size=(400, 200))
+        super().__init__(parent=None, title='静态文本和按钮', size=(300, 200))
         self.Centre()  # 设置窗口居中
         panel = wx.Panel(parent=self)
+        # 创建垂直方向的Box布局管理器
+        vbox = wx.BoxSizer(wx.VERTICAL)
 
-        fgs = wx.FlexGridSizer(3, 2, 10, 10)
+        self.statictext = wx.StaticText(parent=panel, label='StaticText1', style=wx.ALIGN_CENTRE_HORIZONTAL)
+        b1 = wx.Button(parent=panel, label='OK')
+        self.Bind(wx.EVT_BUTTON, self.on_click, b1)
 
-        title = wx.StaticText(panel, label="标题：")
-        author = wx.StaticText(panel, label="作者名：")
-        review = wx.StaticText(panel, label="内容：")
+        b2 = wx.ToggleButton(panel, -1, 'ToggleButton')
+        self.Bind(wx.EVT_BUTTON, self.on_click, b2)
 
-        tc1 = wx.TextCtrl(panel)
-        tc2 = wx.TextCtrl(panel)
-        tc3 = wx.TextCtrl(panel, style=wx.TE_MULTILINE)
+        bmp = wx.Bitmap('icon/1.png', wx.BITMAP_TYPE_PNG)
+        b3 = wx.BitmapButton(panel, -1, bmp)
+        self.Bind(wx.EVT_BUTTON, self.on_click, b3)
 
-        fgs.AddMany([title, (tc1, 1, wx.EXPAND),
-                     author, (tc2, 1, wx.EXPAND),
-                     review, (tc3, 1, wx.EXPAND)])
+        # 添加静态文本和按钮到Box布局管理器
+        vbox.Add(100, 10, proportion=1, flag=wx.CENTER | wx.FIXED_MINSIZE)
+        vbox.Add(self.statictext, proportion=1, flag=wx.CENTER | wx.FIXED_MINSIZE)
+        vbox.Add(b1, proportion=1, flag=wx.CENTER | wx.EXPAND)
+        vbox.Add(b2, proportion=1, flag=wx.CENTER | wx.EXPAND)
+        vbox.Add(b3, proportion=1, flag=wx.CENTER | wx.EXPAND)
 
-        fgs.AddGrowableRow(0, 1)
-        fgs.AddGrowableRow(1, 1)
-        fgs.AddGrowableRow(2, 3)
-        fgs.AddGrowableCol(0, 1)
-        fgs.AddGrowableCol(1, 2)
+        panel.SetSizer(vbox)
 
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        hbox.Add(fgs, proportion=1, flag=wx.ALL | wx.EXPAND, border=15)
-
-        panel.SetSizer(hbox)
+    def on_click(self, event):
+        self.statictext.SetLabelText('Hello, world.')
 
 
 class App(wx.App):
