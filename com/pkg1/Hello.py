@@ -1,50 +1,39 @@
 # coding=utf-8
 
-
 import wx
 
 
 # 自定义窗口类MyFrame
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='Grid布局', size=(300, 300))
+        super().__init__(parent=None, title='FlexGrid布局', size=(400, 200))
         self.Centre()  # 设置窗口居中
-        panel = wx.Panel(self)
-        btn1 = wx.Button(panel, label='1')
-        btn2 = wx.Button(panel, label='2')
-        btn3 = wx.Button(panel, label='3')
-        btn4 = wx.Button(panel, label='4')
-        btn5 = wx.Button(panel, label='5')
-        btn6 = wx.Button(panel, label='6')
-        btn7 = wx.Button(panel, label='7')
-        btn8 = wx.Button(panel, label='8')
-        btn9 = wx.Button(panel, label='9')
+        panel = wx.Panel(parent=self)
 
-        grid = wx.GridSizer(cols=3, rows=3, vgap=0, hgap=20)
+        fgs = wx.FlexGridSizer(3, 2, 10, 10)
 
-        # grid.AddMany([
-        #     (btn1, 0, wx.EXPAND),
-        #     (btn2, 0, wx.EXPAND),
-        #     (btn3, 0, wx.EXPAND),
-        #     (btn4, 0, wx.EXPAND),
-        #     (btn5, 0, wx.EXPAND),
-        #     (btn6, 0, wx.EXPAND),
-        #     (btn7, 0, wx.EXPAND),
-        #     (btn8, 0, wx.EXPAND),
-        #     (btn9, 0, wx.EXPAND)
-        # ])
+        title = wx.StaticText(panel, label="标题：")
+        author = wx.StaticText(panel, label="作者名：")
+        review = wx.StaticText(panel, label="内容：")
 
-        grid.Add(btn1, 0, wx.EXPAND)
-        grid.Add(btn2, 0, wx.EXPAND)
-        grid.Add(btn3, 0, wx.EXPAND)
-        grid.Add(btn4, 0, wx.EXPAND)
-        grid.Add(btn5, 0, wx.EXPAND)
-        grid.Add(btn6, 0, wx.EXPAND)
-        grid.Add(btn7, 0, wx.EXPAND)
-        grid.Add(btn8, 0, wx.EXPAND)
-        grid.Add(btn9, 0, wx.EXPAND)
+        tc1 = wx.TextCtrl(panel)
+        tc2 = wx.TextCtrl(panel)
+        tc3 = wx.TextCtrl(panel, style=wx.TE_MULTILINE)
 
-        panel.SetSizer(grid)
+        fgs.AddMany([title, (tc1, 1, wx.EXPAND),
+                     author, (tc2, 1, wx.EXPAND),
+                     review, (tc3, 1, wx.EXPAND)])
+
+        fgs.AddGrowableRow(0, 1)
+        fgs.AddGrowableRow(1, 1)
+        fgs.AddGrowableRow(2, 3)
+        fgs.AddGrowableCol(0, 1)
+        fgs.AddGrowableCol(1, 2)
+
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        hbox.Add(fgs, proportion=1, flag=wx.ALL | wx.EXPAND, border=15)
+
+        panel.SetSizer(hbox)
 
 
 class App(wx.App):
