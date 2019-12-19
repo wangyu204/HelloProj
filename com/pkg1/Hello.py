@@ -25,32 +25,42 @@ class TicketDB:
 
 # 创建TicketDB对象
 db = TicketDB()
+# 创建Lock对象
+lock = threading.Lock()
 
 
 # 线程体1函数
 def thread1_body():
-    global db  # 声明为全局变量
+    global db, lock  # 声明为全局变量
     while True:
+        lock.acquire()
         curr_ticket_count = db.get_ticket_count()
         # 查询是否有票
         if curr_ticket_count > 0:
             db.sell_ticket()
         else:
+            lock.release()
             # 无票退出
             break
+        lock.release()
+        time.sleep(1)
 
 
 # 线程体2函数
 def thread2_body():
-    global db  # 声明为全局变量
+    global db, lock  # 声明为全局变量
     while True:
+        lock.acquire()
         curr_ticket_count = db.get_ticket_count()
         # 查询是否有票
         if curr_ticket_count > 0:
             db.sell_ticket()
         else:
+            lock.release()
             # 无票退出
             break
+        lock.release()
+        time.sleep(1)
 
 
 # 主函数
