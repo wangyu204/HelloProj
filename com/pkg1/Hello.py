@@ -1,36 +1,34 @@
 # coding=utf-8
 
+
 import threading
 import time
 
-# 共享变量
-value = 0
+# 线程停止变量
+isrunning = True
 
 
 # 线程体函数
 def thread_body():
-    global value
-    # 当前线程对象
-    print('ThreadA 开始...')
-    for n in range(2):
-        print('ThreadA 执行...')
-        value += 1
+    while isrunning:
+        # 线程开始工作
+        print('下载中...')
         # 线程休眠
-        time.sleep(1)
-    print('ThreadA 结束...')
+        time.sleep(5)
+    print('执行完成!')
 
 
 # 主函数
 def main():
-    print('主线程 开始...')
     # 创建线程对象t1
-    t1 = threading.Thread(target=thread_body, name='ThreadA')
+    t1 = threading.Thread(target=thread_body)
     # 启动线程t1
     t1.start()
-    # 主线程被阻塞，等待t1线程结束
-    t1.join()
-    print('value = {0}'.format(value))
-    print('主线程 结束...')
+    # 从键盘输入停止指令 exit
+    command = input('请输入停止指令：')
+    if command == 'exit':
+        global isrunning
+        isrunning = False
 
 
 if __name__ == '__main__':
