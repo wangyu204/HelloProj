@@ -4,8 +4,7 @@
 import threading
 import time
 
-# 创建条件变量对象
-condition = threading.Condition()
+event = threading.Event()
 
 
 class Stack:
@@ -17,35 +16,31 @@ class Stack:
 
     # 压栈方法
     def push(self, c):
-        global condition
-        condition.acquire()
+        global event
         # 堆栈已满，不能压栈
         while self.pointer == len(self.data):
             # 等待其它线程把数据出栈
-            condition.wait()
+            event.wait()
         # 通知其他线程把数据出栈
-        condition.notify()
+        event.set()
         # 数据压栈
         self.data[self.pointer] = c
         # 指针向上移动
         self.pointer += 1
-        condition.release()
 
-    # 出栈方法
+    # 出栈方法®
     def pop(self):
-        global condition
-        condition.acquire()
+        global event
         # 堆栈无数据，不能出栈
         while self.pointer == 0:
             # 等待其他线程把数据压栈
-            condition.wait()
+            event.wait()
         # 通知其他线程压栈
-        condition.notify()
+        event.set()
         # 指针向下移动
         self.pointer -= 1
-        data = self.data[self.pointer]
-        condition.release()
         # 数据出栈
+        data = self.data[self.pointer]
         return data
 
 
