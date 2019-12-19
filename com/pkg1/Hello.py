@@ -1,43 +1,36 @@
 # coding=utf-8
 
-
 import wx
 
 
 # 自定义窗口类MyFrame
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title='静态图片控件', size=(300, 300))
+        super().__init__(parent=None, title='分隔窗口', size=(350, 180))
         self.Centre()  # 设置窗口居中
-        self.panel = wx.Panel(parent=self)
 
-        self.bmps = [wx.Bitmap('images/bird5.gif', wx.BITMAP_TYPE_GIF),
-                     wx.Bitmap('images/bird4.gif', wx.BITMAP_TYPE_GIF),
-                     wx.Bitmap('images/bird3.gif', wx.BITMAP_TYPE_GIF)]
+        splitter = wx.SplitterWindow(self, -1)  # 直接父类上
+        leftpanel = wx.Panel(splitter)
+        rightpanel = wx.Panel(splitter)
+        splitter.SplitVertically(leftpanel, rightpanel, 100)
+        splitter.SetMinimumPaneSize(80)
 
-        # 创建垂直方向的Box布局管理器
-        vbox = wx.BoxSizer(wx.VERTICAL)
+        list2 = ['苹果', '橘子', '香蕉']
+        lb2 = wx.ListBox(leftpanel, -1, choices=list2, style=wx.LB_SINGLE)
+        self.Bind(wx.EVT_LISTBOX, self.on_listbox, lb2)
 
-        b1 = wx.Button(parent=self.panel, id=1, label='Button1')
-        b2 = wx.Button(self.panel, id=2, label='Button2')
-        self.Bind(wx.EVT_BUTTON, self.on_click, id=1, id2=2)
+        vbox1 = wx.BoxSizer(wx.VERTICAL)
+        vbox1.Add(lb2, 1, flag=wx.ALL | wx.EXPAND, border=5)
+        leftpanel.SetSizer(vbox1)
 
-        self.image = wx.StaticBitmap(self.panel, -1, self.bmps[0])
+        vbox2 = wx.BoxSizer(wx.VERTICAL)
+        self.content = wx.StaticText(rightpanel, label='右侧面板')
+        vbox2.Add(self.content, 1, flag=wx.ALL | wx.EXPAND, border=5)
+        rightpanel.SetSizer(vbox2)
 
-        # 添加标控件到Box布局管理器
-        vbox.Add(b1, proportion=1, flag=wx.CENTER | wx.EXPAND)
-        vbox.Add(b2, proportion=1, flag=wx.CENTER | wx.EXPAND)
-        vbox.Add(self.image, proportion=3, flag=wx.CENTER)
-
-        self.panel.SetSizer(vbox)
-
-    def on_click(self, event):
-        event_id = event.GetId()
-        if event_id == 1:
-            self.image.SetBitmap(self.bmps[1])
-        else:
-            self.image.SetBitmap(self.bmps[2])
-        self.panel.Layout()  # 界面刷新避免重影
+    def on_listbox(self, event):
+        s = '选择 {0}'.format(event.GetString())
+        self.content.SetLabel(s)
 
 
 class App(wx.App):
