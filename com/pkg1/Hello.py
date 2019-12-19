@@ -4,76 +4,91 @@
 import threading
 import time
 
+# 创建条件变量对象
+condition = threading.Condition()
 
-class TicketDB:
+
+class Stack:
     def __init__(self):
-        # 机票的数量
-        self.ticket_count = 5
+        # 堆栈指针初始值为0
+        self.pointer = 0
+        # 堆栈有5个数字的空间
+        self.data = [-1, -1, -1, -1, -1]
 
-    # 获得当前机票数量
-    def get_ticket_count(self):
-        return self.ticket_count
+    # 压栈方法
+    def push(self, c):
+        global condition
+        condition.acquire()
+        # 堆栈已满，不能压栈
+        while self.pointer == len(self.data):
+            # 等待其它线程把数据出栈
+            condition.wait()
+        # 通知其他线程把数据出栈
+        condition.notify()
+        # 数据压栈
+        self.data[self.pointer] = c
+        # 指针向上移动
+        self.pointer += 1
+        condition.release()
 
-    # 销售机票
-    def sell_ticket(self):
-        # TODO 等于用户付款
-        # 线程休眠，阻塞当前线程，模拟等待用户付款
+    # 出栈方法
+    def pop(self):
+        global condition
+        condition.acquire()
+        # 堆栈无数据，不能出栈
+        while self.pointer == 0:
+            # 等待其他线程把数据压栈
+            condition.wait()
+        # 通知其他线程压栈
+        condition.notify()
+        # 指针向下移动
+        self.pointer -= 1
+        data = self.data[self.pointer]
+        condition.release()
+        # 数据出栈
+        return data
+
+
+# 创建堆栈Stack对象
+stack = Stack()
+
+
+# 生产者线程体函数
+def producer_thread_body():
+    global stack  # 声明为全局变量
+    # 产生10个数字
+    for i in range(0, 10):
+        # 把数字压栈
+        stack.push(i)
+        # 打印数字
+        print('生产：{0}'.format(i))
+        # 每产生一个数字线程就睡眠
         time.sleep(1)
-        print(threading.current_thread().name)
-        print("第{0}号票,已经售出".format(self.ticket_count))
-        self.ticket_count -= 1
 
 
-# 创建TicketDB对象
-db = TicketDB()
-# 创建Lock对象
-lock = threading.Lock()
-
-
-# 线程体1函数
-def thread1_body():
-    global db, lock  # 声明为全局变量
-    while True:
-        lock.acquire()
-        curr_ticket_count = db.get_ticket_count()
-        # 查询是否有票
-        if curr_ticket_count > 0:
-            db.sell_ticket()
-        else:
-            lock.release()
-            # 无票退出
-            break
-        lock.release()
-        time.sleep(1)
-
-
-# 线程体2函数
-def thread2_body():
-    global db, lock  # 声明为全局变量
-    while True:
-        lock.acquire()
-        curr_ticket_count = db.get_ticket_count()
-        # 查询是否有票
-        if curr_ticket_count > 0:
-            db.sell_ticket()
-        else:
-            lock.release()
-            # 无票退出
-            break
-        lock.release()
+# 消费者线程体函数
+def consumer_thread_body():
+    global stack  # 声明为全局变量
+    # 从堆栈中读取数字
+    for i in range(0, 10):
+        # 从堆栈中读取数字
+        x = stack.pop()
+        # 打印数字
+        print('消费：{0}'.format(x))
+        # 每消费一个数字线程就睡眠
         time.sleep(1)
 
 
 # 主函数
 def main():
-    # 创建线程对象t1
-    t1 = threading.Thread(target=thread1_body)
-    # 启动线程t1
-    t1.start()
-    # 创建线程对象t2
-    t2 = threading.Thread(target=thread2_body)
-    # 启动线程t2
-    t2.start()
+    # 创建生产者线程对象producer
+    producer = threading.Thread(target=producer_thread_body)
+    # 启动生产者线程
+    producer.start()
+    # 创建消费者线程对象consumer
+    consumer = threading.Thread(target=consumer_thread_body)
+    # 启动消费者线程
+    consumer.start()
 
 
 if __name__ == '__main__':
