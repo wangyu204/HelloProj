@@ -19,6 +19,7 @@ class TicketDB:
         # TODO 等于用户付款
         # 线程休眠，阻塞当前线程，模拟等待用户付款
         time.sleep(1)
+        print(threading.current_thread().name)
         print("第{0}号票,已经售出".format(self.ticket_count))
         self.ticket_count -= 1
 
