@@ -41,7 +41,25 @@ data = [['0036', '高等数学', '李放', '人民邮电出版社', '20000812', 
         ['0005', 'java基础', '王一', '电子工业出版社', '19990528', '3'],
         ['0032', 'SQL使用手册', '贺民', '电子工业出版社', '19990425', '2']]
 
-column_names = ['书籍编号', '书籍名称', '作者', '出版社', '出版日期', '库存数量']
+column_names = ['书籍编号', '书籍名称书籍名称', '作者', '出版社', '出版日期', '库存数量']
+
+
+class MyGridTable(wx.grid.GridTableBase):
+    def __init__(self):
+        super().__init__()
+        self.colLabels = column_names
+
+    def GetNumberRows(self):
+        return len(data)
+
+    def GetNumberCols(self):
+        return len(data[0])
+
+    def GetValue(self, row, col):
+        return data[row][col]
+
+    def GetColLabelValue(self, col):
+        return self.colLabels[col]
 
 
 # 自定义窗口类MyFrame
@@ -50,9 +68,9 @@ class MyFrame(wx.Frame):
         super().__init__(parent=None, title='网格控件', size=(550, 500))
         self.Centre()  # 设置窗口居中
         self.grid = self.CreateGrid(self)
-        self.Bind(wx.grid.EVT_GRID_LABEL_LEFT_CLICK, self.onLabelLeftClick)
+        self.Bind(wx.grid.EVT_GRID_LABEL_LEFT_CLICK, self.OnLabelLeftClick)
 
-    def onLabelLeftClick(self, event):
+    def OnLabelLeftClick(self, event):
         print("RowIdx：{0}".format(event.GetRow()))
         print("ColIdx：{0}".format(event.GetCol()))
         print(data[event.GetRow()])
@@ -60,15 +78,10 @@ class MyFrame(wx.Frame):
 
     def CreateGrid(self, parent):
         grid = wx.grid.Grid(parent)
-        grid.CreateGrid(len(data), len(data[0]))
-
-        for row in range(len(data)):
-            for col in range(len(data[row])):
-                grid.SetColLabelValue(col, column_names[col])
-                grid.SetCellValue(row, col, data[row][col])
+        tablebase = MyGridTable()
+        grid.SetTable(tablebase, True)
         # 设置行和列自定调整
         grid.AutoSize()
-
         return grid
 
 
