@@ -1,9 +1,9 @@
 # coding=utf-8
 
-
 import os
-import re
 import urllib.request
+
+from bs4 import BeautifulSoup
 
 url = 'http://p.weather.com.cn/'
 
@@ -11,9 +11,17 @@ url = 'http://p.weather.com.cn/'
 def findallimageurl(htmlstr):
     """从HTML代码中查找匹配的字符串"""
 
-    # 定义正则表达式
-    pattern = r'http://\S+(?:\.png|\.jpg)'
-    return re.findall(pattern, htmlstr)
+    sp = BeautifulSoup(htmlstr, 'html.parser') #html.parser html.parser
+    # 返回所有的img标签对象
+    imgtaglist = sp.find_all('img')
+
+    # 从img标签对象列表中返回对应的src列表
+    srclist = list(map(lambda u: u.get('src'), imgtaglist))
+    # 过滤掉非.png和.jpg结尾文件src字符串
+    filtered_srclist = filter(lambda u: u.lower().endswith('.png')
+                                        or u.lower().endswith('.jpg'), srclist)
+
+    return filtered_srclist
 
 
 def getfilename(urlstr):
