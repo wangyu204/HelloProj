@@ -3,14 +3,12 @@
 """项目实战：抓取纳斯达克股票数据"""
 import datetime
 import hashlib
+import json
 import logging
 import os
-import re
 import threading
 import time
 import urllib.request
-
-from bs4 import BeautifulSoup
 
 from com.pkg1.db.db_access import insert_hisq_data
 
@@ -19,12 +17,11 @@ logging.basicConfig(level=logging.INFO,
                            '%(name)s - %(funcName)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-url = 'https://www.nasdaq.com/symbol/aapl/historical#.UWdnJBDMhHk'
+url = 'https://api.nasdaq.com/api/quote/AAPL/historical?assetclass=stocks&fromdate=2019-01-01&limit=18&todate=2019-12-20'
 
 
 def validateUpdate(html):
     """验证数据是否更新，更新返回True，未更新返回False"""
-
     # 创建md5对象
     md5obj = hashlib.md5()
     md5obj.update(html.encode(encoding='utf-8'))
@@ -72,6 +69,7 @@ def controlthread_body():
 
 def istradtime():
     """判断交易时间"""
+    # return False
 
     now = datetime.datetime.now()
     df = '%H%M%S'
@@ -88,6 +86,12 @@ def istradtime():
     return True
 
 
+def validate_price(oriPrice):
+    if oriPrice.find('$') >= 0:
+        oriPrice = oriPrice.replace('$', '')
+    return oriPrice
+
+
 def workthread_body():
     """工作线程体函数"""
 
@@ -102,42 +106,39 @@ def workthread_body():
             continue
 
         logger.info('爬虫开始工作...')
+
         req = urllib.request.Request(url)
 
         with urllib.request.urlopen(req) as response:
             data = response.read()
-            html = data.decode()
+            html = data.decode('gbk')
+            print(html)
 
-            sp = BeautifulSoup(html, 'html.parser')
-            # 返回指定CSS选择器的div标签列表
-            div = sp.select('div.historical-data__table-container')
-            # 从列表中返回第一个元素
-            divstring = div[0]
+            py_dict = json.loads(html)
+
+            divstring = html
 
             if validateUpdate(divstring):  # 数据更新
                 # 分析数据
-                trlist = sp.select('div.historical-data__table-container table tbody tr')
+                trlist = py_dict['data']['tradesTable']['rows']
 
                 data = []
 
                 for tr in trlist:
-                    trtext = tr.text.strip('\n\r ')
-                    if trtext == '':
-                        continue
 
-                    rows = re.split(r'\s+', trtext)
+                    rows = tr
                     fields = {}
                     try:
                         df = '%m/%d/%Y'
-                        fields['Date'] = datetime.datetime.strptime(rows[0], df)
+                        fields['Date'] = datetime.datetime.strptime(rows["date"], df)
                     except ValueError:
                         # 实时数据不分析（只有时间，如10:12）
                         continue
-                    fields['Open'] = float(rows[1])
-                    fields['High'] = float(rows[2])
-                    fields['Low'] = float(rows[3])
-                    fields['Close'] = float(rows[4])
-                    fields['Volume'] = int(rows[5].replace(',', ''))
+                    fields['Open'] = float(validate_price(rows["open"]))
+                    fields['High'] = float(validate_price(rows["high"]))
+                    fields['Low'] = float(validate_price(rows["low"]))
+                    fields['Close'] = float(validate_price(rows["close"]))
+                    fields['Volume'] = int(rows["volume"].replace(',', ''))
                     data.append(fields)
 
                 # 保存数据到数据库
