@@ -1,15 +1,15 @@
 # coding=utf-8
 
-"""获得动态数据"""
 import urllib.request
 
-url = 'http://q.stock.sohu.com/hisHq?code=cn_600519&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp&0.8115656498417958'
+url = 'http://www.ctrip.com/'
+
 req = urllib.request.Request(url)
+req.add_header('User-Agent',
+               'Mozilla/5.0 (iPhone; CPU iPhone OS 10_2_1 like Mac OS X) AppleWebKit/602.4.6 (KHTML, like Gecko) Version/10.0 Mobile/14D27 Safari/602.1')
 
 with urllib.request.urlopen(req) as response:
     data = response.read()
-    htmlstr = data.decode('gbk')
-    print(htmlstr)
-    htmlstr = htmlstr.replace('historySearchHandler(', '')
-    htmlstr = htmlstr.replace(')', '')
-    print('替换后的：', htmlstr)
+    htmlstr = data.decode()
+    if htmlstr.find('mobile') != -1:
+        print('移动版')
