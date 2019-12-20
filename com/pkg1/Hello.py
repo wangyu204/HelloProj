@@ -1,8 +1,11 @@
 # coding=utf-8
 
 """项目实战：抓取纳斯达克股票数据"""
+
+import datetime
 import hashlib
 import os
+import re
 import urllib.request
 
 from bs4 import BeautifulSoup
@@ -28,7 +31,7 @@ def validateUpdate(html):
 
     if md5code == old_md5code:
         print('数据没有更新')
-        return False
+        return True
     else:
         # 把新的md5码写入到文件中
         with open(f_name, 'w', encoding='utf-8') as f:
@@ -45,13 +48,40 @@ with urllib.request.urlopen(req) as response:
 
     sp = BeautifulSoup(html, 'html.parser')
     # 返回指定CSS选择器的div标签列表
-    # div = sp.select('div#quotes_content_left_pnlAJAX')
     div = sp.select('div.historical-data__table-container')
     # 从列表中返回第一个元素
     divstring = div[0]
 
     if validateUpdate(divstring):  # 数据更新
-        pass
-        # TODO 分析数据
+        # 分析数据
+        # trlist = sp.select('div.historical-data__table-container table.historical-data__table tbody.historical-data__table-body tr.historical-data__row')
+        trlist = sp.select('div.historical-data__table-container table tbody tr')
+
+        data = []
+
+        for tr in trlist:
+            print(tr.text)
+            trtext = tr.text.strip('\n\r ')
+            if trtext == '':
+                continue
+
+            rows = re.split(r'\s+', trtext)
+            # print(rows)
+            fields = {}
+            try:
+                df = '%m/%d/%Y'
+                fields['Date'] = datetime.datetime.strptime(rows[0], df)
+            except ValueError:
+                # 实时数据不分析（只有时间，如10:12）
+                continue
+            fields['Open'] = float(rows[1])
+            fields['High'] = float(rows[2])
+            fields['Low'] = float(rows[3])
+            fields['Close'] = float(rows[4])
+            fields['Volume'] = int(rows[5].replace(',', ''))
+            data.append(fields)
+            # print('===================')
+
+        print(data)
 
         # TODO 保存数据到数据库
