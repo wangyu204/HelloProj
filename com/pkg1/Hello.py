@@ -1,15 +1,12 @@
 # coding=utf-8
 
-import urllib.request
 
-url = 'http://www.ctrip.com/'
+from selenium import webdriver
 
-req = urllib.request.Request(url)
-req.add_header('User-Agent',
-               'Mozilla/5.0 (iPhone; CPU iPhone OS 10_2_1 like Mac OS X) AppleWebKit/602.4.6 (KHTML, like Gecko) Version/10.0 Mobile/14D27 Safari/602.1')
+driver = webdriver.Firefox()
 
-with urllib.request.urlopen(req) as response:
-    data = response.read()
-    htmlstr = data.decode()
-    if htmlstr.find('mobile') != -1:
-        print('移动版')
+driver.get('http://q.stock.sohu.com/cn/600519/lshq.shtml')
+em = driver.find_element_by_id('BIZ_hq_historySearch')
+print(em.text)
+# driver.close()
+driver.quit()
