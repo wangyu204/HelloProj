@@ -1,4 +1,5 @@
 # coding=utf-8
+# 代码文件：chapter21/21.4/ch21.4.4.py
 
 """项目实战：抓取纳斯达克股票数据"""
 
@@ -10,12 +11,14 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 
+from com.pkg1.db.db_access import insert_hisq_data
+
 url = 'https://www.nasdaq.com/symbol/aapl/historical#.UWdnJBDMhHk'
 
 
 def validateUpdate(html):
     """验证数据是否更新，更新返回True，未更新返回False"""
-
+    print(html)
     # 创建md5对象
     md5obj = hashlib.md5()
     md5obj.update(html.encode(encoding='utf-8'))
@@ -31,7 +34,7 @@ def validateUpdate(html):
 
     if md5code == old_md5code:
         print('数据没有更新')
-        return True
+        return False
     else:
         # 把新的md5码写入到文件中
         with open(f_name, 'w', encoding='utf-8') as f:
@@ -46,7 +49,7 @@ with urllib.request.urlopen(req) as response:
     data = response.read()
     html = data.decode()
 
-    sp = BeautifulSoup(html, 'html.parser')
+    sp = BeautifulSoup(html, 'html.parser')  
     # 返回指定CSS选择器的div标签列表
     div = sp.select('div.historical-data__table-container')
     # 从列表中返回第一个元素
@@ -54,19 +57,16 @@ with urllib.request.urlopen(req) as response:
 
     if validateUpdate(divstring):  # 数据更新
         # 分析数据
-        # trlist = sp.select('div.historical-data__table-container table.historical-data__table tbody.historical-data__table-body tr.historical-data__row')
         trlist = sp.select('div.historical-data__table-container table tbody tr')
 
         data = []
 
         for tr in trlist:
-            print(tr.text)
             trtext = tr.text.strip('\n\r ')
             if trtext == '':
                 continue
 
             rows = re.split(r'\s+', trtext)
-            # print(rows)
             fields = {}
             try:
                 df = '%m/%d/%Y'
@@ -80,8 +80,10 @@ with urllib.request.urlopen(req) as response:
             fields['Close'] = float(rows[4])
             fields['Volume'] = int(rows[5].replace(',', ''))
             data.append(fields)
-            # print('===================')
 
         print(data)
 
-        # TODO 保存数据到数据库
+        # 保存数据到数据库
+        for row in data:
+            row['Symbol'] = 'AAPL'
+            insert_hisq_data(row)
