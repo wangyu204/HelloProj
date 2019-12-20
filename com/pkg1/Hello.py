@@ -1,63 +1,57 @@
 # coding=utf-8
 
+"""项目实战：抓取纳斯达克股票数据"""
+import hashlib
 import os
 import urllib.request
 
 from bs4 import BeautifulSoup
 
-url = 'http://p.weather.com.cn/'
+url = 'https://www.nasdaq.com/symbol/aapl/historical#.UWdnJBDMhHk'
 
 
-def findallimageurl(htmlstr):
-    """从HTML代码中查找匹配的字符串"""
+def validateUpdate(html):
+    """验证数据是否更新，更新返回True，未更新返回False"""
 
-    sp = BeautifulSoup(htmlstr, 'html.parser') #html.parser html.parser
-    # 返回所有的img标签对象
-    imgtaglist = sp.find_all('img')
+    # 创建md5对象
+    md5obj = hashlib.md5()
+    md5obj.update(html.encode(encoding='utf-8'))
+    md5code = md5obj.hexdigest()
+    print(md5code)
 
-    # 从img标签对象列表中返回对应的src列表
-    srclist = list(map(lambda u: u.get('src'), imgtaglist))
-    # 过滤掉非.png和.jpg结尾文件src字符串
-    filtered_srclist = filter(lambda u: u.lower().endswith('.png')
-                                        or u.lower().endswith('.jpg'), srclist)
+    old_md5code = ''
+    f_name = 'md5.txt'
 
-    return filtered_srclist
+    if os.path.exists(f_name):  # 如果文件存在读取文件内容
+        with open(f_name, 'r', encoding='utf-8') as f:
+            old_md5code = f.read()
+
+    if md5code == old_md5code:
+        print('数据没有更新')
+        return False
+    else:
+        # 把新的md5码写入到文件中
+        with open(f_name, 'w', encoding='utf-8') as f:
+            f.write(md5code)
+        print('数据更新')
+        return True
 
 
-def getfilename(urlstr):
-    """根据图片连接地址截取图片名"""
-
-    pos = urlstr.rfind('/')
-    return urlstr[pos + 1:]
-
-
-# 分析获得的url列表
-url_list = []
 req = urllib.request.Request(url)
+
 with urllib.request.urlopen(req) as response:
     data = response.read()
-    htmlstr = data.decode()
+    html = data.decode()
 
-    url_list = findallimageurl(htmlstr)
+    sp = BeautifulSoup(html, 'html.parser')
+    # 返回指定CSS选择器的div标签列表
+    # div = sp.select('div#quotes_content_left_pnlAJAX')
+    div = sp.select('div.historical-data__table-container')
+    # 从列表中返回第一个元素
+    divstring = div[0]
 
-for imagesrc in url_list:
-    # 根据图片地址下载
-    req = urllib.request.Request(imagesrc)
-    with urllib.request.urlopen(req) as response:
-        data = response.read()
-        # 过滤掉用小于100kb字节的图片
-        if len(data) < 1024 * 100:
-            continue
+    if validateUpdate(divstring):  # 数据更新
+        pass
+        # TODO 分析数据
 
-        # 创建download文件夹
-        if not os.path.exists('download'):
-            os.mkdir('download')
-
-        # 获得图片文件名
-        filename = getfilename(imagesrc)
-        filename = 'download/' + filename
-        # 保存图片到本地
-        with open(filename, 'wb') as f:
-            f.write(data)
-
-    print('下载图片', filename)
+        # TODO 保存数据到数据库
