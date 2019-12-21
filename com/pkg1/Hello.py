@@ -5,25 +5,20 @@ import matplotlib.pyplot as plt
 
 from com.pkg1.db.db_access import findall_hisq_data
 
+# 设置中文字体
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
 
-def pot_hisvolume(dates, volumes):
-    """苹果股票历史成交量折线图"""
 
-    # 设置中文字体
-    plt.rcParams['font.family'] = ['SimHei']
-    plt.rcParams['axes.unicode_minus'] = False
+def pot_his_bar(date_list, p_list, ylabel):
+    """绘制OHLC柱状图"""
 
-    # 设置图表大小  x轴大一点，长一倍
-    plt.figure(figsize=(16, 4))
+    # 绘制柱状图
+    plt.bar(date_list, p_list)
 
-    # 绘制线段
-    plt.plot(dates, volumes)
-
-    plt.title('苹果股票历史成交量')  # 添加图表标题
-    plt.ylabel('成交量')  # 添加y轴标题
+    plt.title('苹果股票历史数据')  # 添加图表标题
+    plt.ylabel(ylabel)  # 添加y轴标题
     plt.xlabel('交易日期')  # 添加x轴标题
-
-    plt.show()  # 显示图形
 
 
 def main():
@@ -31,17 +26,48 @@ def main():
 
     data = findall_hisq_data('AAPL')
 
-    # 从data中提取成交量数据
-    volume_map = map(lambda it: it['Volume'], data)
-    # 将volume_map转换为交量列表
-    volume_list = list(volume_map)
-
     # 从data中提取日期数据
     date_map = map(lambda it: it['Date'], data)
     # 将date_map转换为日期列表
     date_list = list(date_map)
 
-    pot_hisvolume(date_list, volume_list)
+    # 从data中提取开盘价数据
+    open_map = map(lambda it: it['Open'], data)
+    # 将open_map转换为开盘价列表
+    open_list = list(open_map)
+
+    # 从data中提取成最高价数据
+    high_map = map(lambda it: it['High'], data)
+    # 将high_map转换为最高价列表
+    high_list = list(high_map)
+
+    # 从data中提取最低价数据
+    low_map = map(lambda it: it['Low'], data)
+    # 将open_map转换为最低价列表
+    low_list = list(low_map)
+
+    # 从data中提取收盘价数据
+    close_map = map(lambda it: it['Close'], data)
+    # 将open_map转换为收盘价列表
+    close_list = list(close_map)
+
+    # 设置图表大小
+    plt.figure(figsize=(10, 6))
+
+    plt.subplot(4, 1, 1)
+    pot_his_bar(date_list, open_list, '开盘价')
+
+    plt.subplot(4, 1, 2)
+    pot_his_bar(date_list, close_list, '收盘价')
+
+    plt.subplot(4, 1, 3)
+    pot_his_bar(date_list, high_list, '最高价')
+
+    plt.subplot(4, 1, 4)
+    pot_his_bar(date_list, low_list, '最低价')
+
+    plt.tight_layout()  # 调整布局
+    plt.show()  # 显示图形
 
 
 if __name__ == '__main__':
