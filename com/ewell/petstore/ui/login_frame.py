@@ -1,8 +1,6 @@
 # coding=utf-8
-# 代码文件：chapter22/PetStore/com/zhijieketang/petstore/ui/login_frame.py
 
 """用户登录窗口"""
-import sys
 
 import wx
 
@@ -27,7 +25,7 @@ class LoginFrame(MyFrame):
                      (self.accountid_txt, 1, wx.CENTER | wx.EXPAND),
                      (password_st, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.FIXED_MINSIZE),
                      (self.password_txt, 1, wx.CENTER | wx.EXPAND)])
-        # 设置FlexGrid布局对象
+        # 设置FlexGrid布局对象 设置行权重，列权重
         fgs.AddGrowableRow(0, 1)
         fgs.AddGrowableRow(1, 1)
         fgs.AddGrowableCol(0, 1)
@@ -46,6 +44,7 @@ class LoginFrame(MyFrame):
 
         # 创建垂直Box布局，把fgs和hbox添加到垂直Box布局对象上
         vbox = wx.BoxSizer(wx.VERTICAL)
+        # -1不指定权重
         vbox.Add(fgs, -1, wx.CENTER | wx.ALL | wx.EXPAND, border=25)
         vbox.Add(hbox, -1, wx.CENTER | wx.BOTTOM, border=20)
 
@@ -79,5 +78,4 @@ class LoginFrame(MyFrame):
         """取消按钮事件处理"""
 
         # 退出系统
-        self.Destroy()
-        sys.exit(0)
+        self.OnClose(self, event)
