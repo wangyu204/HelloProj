@@ -7,6 +7,50 @@ import pymysql
 logger = logging.getLogger(__name__)
 
 
+def findall_hisq_data(symbol):
+    """根据股票代码查询其股票历史数据"""
+
+    # 1. 建立数据库连接
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='wy123456',
+                                 database='nasdaq',
+                                 charset='utf8')
+    # 要返回的数据
+    data = []
+
+    try:
+        # 2. 创建游标对象
+        with connection.cursor() as cursor:
+
+            # 3. 执行SQL操作
+            sql = 'select HDate, Open, High, Low, Close, Volume,Symbol ' \
+                  'from historicalquote where Symbol = %s '
+            cursor.execute(sql, [symbol])
+
+            # 4. 提取结果集
+            result_set = cursor.fetchall()
+
+            for row in result_set:
+                fields = {}
+                fields['Date'] = row[0]
+                fields['Open'] = float(row[1])
+                fields['High'] = float(row[2])
+                fields['Low'] = float(row[3])
+                fields['Close'] = float(row[4])
+                fields['Volume'] = row[5]
+                data.append(fields)
+
+        # with代码块结束 5. 关闭游标
+    except pymysql.DatabaseError as error:
+        print('数据查询失败' + error)
+    finally:
+        # 6. 关闭数据连接
+        connection.close()
+
+    return data
+
+
 def insert_hisq_data(row):
     """在股票历史价格表中传入数据"""
 
