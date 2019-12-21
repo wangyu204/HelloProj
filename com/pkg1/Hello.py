@@ -1,88 +1,48 @@
 # coding=utf-8
 
+
 import matplotlib.pyplot as plt
-import numpy as np
 
-# 设置中文字体
-plt.rcParams['font.family'] = ['SimHei']
-plt.rcParams['axes.unicode_minus'] = False
+from com.pkg1.db.db_access import findall_hisq_data
 
 
-def drowsubbar():
-    """绘制柱状图"""
+def pot_hisvolume(dates, volumes):
+    """苹果股票历史成交量折线图"""
 
-    x1 = [1, 3, 5, 7, 9]  # x1轴坐标数据
-    y1 = [5, 2, 7, 8, 2]  # y1轴坐标数据
+    # 设置中文字体
+    plt.rcParams['font.family'] = ['SimHei']
+    plt.rcParams['axes.unicode_minus'] = False
 
-    x2 = [2, 4, 6, 8, 10]  # x2轴坐标数据
-    y2 = [8, 6, 2, 5, 6]  # y2轴坐标数据
-
-    # 绘制柱状图
-    plt.bar(x1, y1, label='柱状图1')
-    plt.bar(x2, y2, label='柱状图2')
-
-    plt.title('绘制柱状图')  # 添加图表标题
-    plt.ylabel('y轴')  # 添加y轴标题
-    plt.xlabel('x轴')  # 添加x轴标题
-
-
-def drowsubpie():
-    """绘制饼状图"""
-
-    # 各种活动标题列表
-    activies = ['工作', '睡', '吃', '玩']
-    # 各种活动所占时间列表
-    slices = [8, 7, 3, 6]
-    # 各种活动在饼状图中的颜色列表
-    cols = ['c', 'm', 'r', 'b']
-
-    plt.pie(slices, labels=activies, colors=cols,
-            shadow=True, explode=(0, 0.1, 0, 0), autopct='%.1f%%')
-
-    plt.title('绘制饼状图')
-
-
-def drowsubline():
-    """绘制折线图"""
-
-    x = [5, 4, 2, 1]  # x轴坐标数据
-    y = [7, 8, 9, 10]  # y轴坐标数据
+    # 设置图表大小  x轴大一点，长一倍
+    plt.figure(figsize=(16, 4))
 
     # 绘制线段
-    plt.plot(x, y, 'b', label='线1', linewidth=2)
+    plt.plot(dates, volumes)
 
-    plt.title('绘制折线图')  # 添加图表标题
+    plt.title('苹果股票历史成交量')  # 添加图表标题
+    plt.ylabel('成交量')  # 添加y轴标题
+    plt.xlabel('交易日期')  # 添加x轴标题
 
-    plt.ylabel('y轴')  # 添加y轴标题
-    plt.xlabel('x轴')  # 添加x轴标题
-
-    plt.legend()  # 设置图例
-
-
-def drowssubscatter():
-    """绘制散点图"""
-
-    n = 1024
-    x = np.random.normal(0, 1, n)
-    y = np.random.normal(0, 1, n)
-
-    plt.scatter(x, y)
-
-    plt.title('绘制散点图')
+    plt.show()  # 显示图形
 
 
-plt.subplot(2, 2, 1)  # 替换(221)
-drowsubbar()
+def main():
+    """主函数"""
 
-plt.subplot(2, 2, 2)  # 替换(222)
-drowsubpie()
+    data = findall_hisq_data('AAPL')
 
-plt.subplot(2, 2, 3)  # 替换(223)
-drowsubline()
+    # 从data中提取成交量数据
+    volume_map = map(lambda it: it['Volume'], data)
+    # 将volume_map转换为交量列表
+    volume_list = list(volume_map)
 
-plt.subplot(2, 2, 4)  # 替换(224)
-drowssubscatter()
+    # 从data中提取日期数据
+    date_map = map(lambda it: it['Date'], data)
+    # 将date_map转换为日期列表
+    date_list = list(date_map)
 
-plt.tight_layout()  # 调整布局
+    pot_hisvolume(date_list, volume_list)
 
-plt.show()  # 显示图形
+
+if __name__ == '__main__':
+    main()
