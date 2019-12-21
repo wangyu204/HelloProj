@@ -1,7 +1,13 @@
 # coding=utf-8
 
 
+import csv
+
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+import mpl_finance
+import pandas
+from pandas.plotting import register_matplotlib_converters
 
 from com.pkg1.db.db_access import findall_hisq_data
 
@@ -10,15 +16,31 @@ plt.rcParams['font.family'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
 
-def pot_his_bar(date_list, p_list, ylabel):
-    """绘制OHLC柱状图"""
+def pot_candlestick_ohlc(datafile):
+    register_matplotlib_converters()
+    """绘制K线图"""
 
-    # 绘制柱状图
-    plt.bar(date_list, p_list)
+    # 从CSV文件中读入数据DataFrame数据结构中 (DataFrame是pandas的一种数据结构，类似于二维表格)
+    quotes = pandas.read_csv(datafile,
+                             index_col=0,
+                             parse_dates=True,
+                             infer_datetime_format=True)
 
-    plt.title('苹果股票{0}历史数据'.format(ylabel))  # 添加图表标题
-    plt.ylabel(ylabel)  # 添加y轴标题
-    plt.xlabel('交易日期')  # 添加x轴标题
+    # 绘制一个子图，并设置子图大小
+    fig, ax = plt.subplots(figsize=(10, 5))
+    # 调整子图参数SubplotParams
+    fig.subplots_adjust(bottom=0.2)
+
+    mpl_finance.candlestick_ohlc(ax, zip(mdates.date2num(quotes.index.to_pydatetime()),
+                                         quotes['Open'], quotes['High'],
+                                         quotes['Low'], quotes['Close']),
+                                 width=1, colorup='r', colordown='g')
+
+    ax.xaxis_date()
+    ax.autoscale_view()
+    plt.setp(plt.gca().get_xticklabels(), rotation=45, horizontalalignment='right')
+
+    plt.show()
 
 
 def main():
@@ -26,48 +48,21 @@ def main():
 
     data = findall_hisq_data('AAPL')
 
-    # 从data中提取日期数据
-    date_map = map(lambda it: it['Date'], data)
-    # 将date_map转换为日期列表
-    date_list = list(date_map)
+    # 列名
+    colsname = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+    # 临时数据文件名
+    datafile = 'temp.csv'
+    # 写如数据到临时数据文件
+    with open(datafile, 'w', newline='', encoding='utf-8') as wf:
+        writer = csv.writer(wf)
+        writer.writerow(colsname)
+        for quotes in data:
+            row = [quotes['Date'], quotes['Open'], quotes['High'],
+                   quotes['Low'], quotes['Close'], quotes['Volume']]
+            writer.writerow(row)
 
-    # 从data中提取开盘价数据
-    open_map = map(lambda it: it['Open'], data)
-    # 将open_map转换为开盘价列表
-    open_list = list(open_map)
-
-    # 从data中提取成最高价数据
-    high_map = map(lambda it: it['High'], data)
-    # 将high_map转换为最高价列表
-    high_list = list(high_map)
-
-    # 从data中提取最低价数据
-    low_map = map(lambda it: it['Low'], data)
-    # 将open_map转换为最低价列表
-    low_list = list(low_map)
-
-    # 从data中提取收盘价数据
-    close_map = map(lambda it: it['Close'], data)
-    # 将open_map转换为收盘价列表
-    close_list = list(close_map)
-
-    # 设置图表大小
-    plt.figure(figsize=(10, 6))
-
-    plt.subplot(4, 1, 1)
-    pot_his_bar(date_list, open_list, '开盘价')
-
-    plt.subplot(4, 1, 2)
-    pot_his_bar(date_list, close_list, '收盘价')
-
-    plt.subplot(4, 1, 3)
-    pot_his_bar(date_list, high_list, '最高价')
-
-    plt.subplot(4, 1, 4)
-    pot_his_bar(date_list, low_list, '最低价')
-
-    plt.tight_layout()  # 调整布局
-    plt.show()  # 显示图形
+    # 调用绘图函数
+    pot_candlestick_ohlc(datafile)
 
 
 if __name__ == '__main__':
