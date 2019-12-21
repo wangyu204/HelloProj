@@ -16,7 +16,7 @@ def pot_his_bar(date_list, p_list, ylabel):
     # 绘制柱状图
     plt.bar(date_list, p_list)
 
-    plt.title('苹果股票历史数据')  # 添加图表标题
+    plt.title('苹果股票{0}历史数据'.format(ylabel))  # 添加图表标题
     plt.ylabel(ylabel)  # 添加y轴标题
     plt.xlabel('交易日期')  # 添加x轴标题
 
