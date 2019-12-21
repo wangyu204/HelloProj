@@ -1,20 +1,18 @@
 # coding=utf-8
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 # 设置中文字体
 plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
 
-# 各种活动标题列表
-activies = ['工作', '睡', '吃', '玩']
-# 各种活动所占时间列表
-slices = [8, 7, 3, 6]
-# 各种活动在饼状图中的颜色列表
-cols = ['c', 'm', 'r', 'b']
+n = 1024
+x = np.random.normal(0, 1, n)
+y = np.random.normal(0, 1, n)
 
-plt.pie(slices, labels=activies, colors=cols,
-        shadow=True, explode=(0, 0.1, 0, 0), autopct='%.1f%%')
+plt.scatter(x, y)
 
-plt.title('绘制饼状图')
+plt.title('绘制散点图')
 
 plt.show()  # 显示图形
