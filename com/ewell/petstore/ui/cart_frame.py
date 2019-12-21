@@ -156,7 +156,7 @@ class CartFrame(MyFrame):
         # 从用户Session中取出用户id
         userid = MyFrame.Session['userid']
         orderid = int(orderdate.timestamp() * 1000)
-        status = 0
+        status = 0  # 0 待付款 1已付款
         amount = self.getorderamount()
 
         order = orderid, userid, orderdate, status, amount
