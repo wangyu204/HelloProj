@@ -1,5 +1,4 @@
 # coding=utf-8
-# 代码文件：chapter22/PetStore/com/zhijieketang/petstore/ui/product_list_frame.py
 
 """商品列表窗口"""
 import wx

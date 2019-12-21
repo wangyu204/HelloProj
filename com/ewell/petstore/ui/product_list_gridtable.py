@@ -1,5 +1,4 @@
 # coding=utf-8
-# 代码文件：chapter22/PetStore/com/zhijieketang/petstore/ui/product_list_gridtable.py
 
 """自定义GridTableBase类, 用于商品网格"""
 import wx.grid

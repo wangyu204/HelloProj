@@ -1,5 +1,4 @@
 # coding=utf-8
-# 代码文件：chapter22/PetStore/com/zhijieketang/petstore/ui/cart_frame.py
 
 """商品购物车窗口"""
 import datetime
